@@ -1,0 +1,1 @@
+# smiles-react-lgpd-banner
