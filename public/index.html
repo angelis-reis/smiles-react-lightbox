@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>LGPD banner</title>
+
+		<script>
+			(function (window, document) {
+				'use strict';
+				let smlsEnv = '';
+				(function () {
+					const rx = /^(portal-|)(.*)\.smiles\.com\.br/g;
+					const res = rx.exec(window.location.hostname);
+					smlsEnv =
+						res === null
+							? 'dev4'
+							: res[2] === 'www'
+							? 'prd'
+							: res[2];
+					window.smlsEnv = smlsEnv;
+				})();
+				function getStyleHost() {
+					if (window.location.hostname.indexOf('localhost') > -1) {
+						window.env = 'portal-dev4';
+						return 'https://localhost:3010';
+					}
+					let env = 'portal-dev4';
+					const rx = /^(.*)\.smiles\.com\.br/g;
+					const res = rx.exec(window.location.hostname);
+					if (res !== null) {
+						env =
+							res[1].indexOf('www') === 0
+								? ''
+								: res[1]
+										.replace(/universal-login/g, 'portal')
+										.replace(/login/g, 'portal')
+										.replace('hml', 'uat');
+					}
+					// Temporary, while we do not have auth0 tenant for each environment
+					if (
+						window.location.hostname.indexOf(
+							'login-dev.smiles.com.br'
+						) > -1 ||
+						window.location.hostname.indexOf(
+							'login-hml.smiles.com.br'
+						) > -1
+					) {
+						env += '4';
+					}
+					window.env = env;
+					// if not production, add '-'
+					if (env) {
+						env += '-';
+					}
+
+					return `https://${env}static.smiler.com.br/bs-theme`;
+				}
+
+				function loadStyle(file, media) {
+					const head = document.getElementsByTagName('head')[0];
+					const lk = document.createElement('link');
+					lk.rel = 'stylesheet';
+					lk.type = 'text/css';
+					lk.href = getStyleHost() + file;
+					lk.media = media;
+					head.appendChild(lk);
+				}
+				loadStyle(
+					'/css/smls-base-theme.min.css?v=%REACT_APP_GIT_HASH%',
+					'all'
+				);
+				loadStyle(
+					'/css/smls-components.min.css?v=%REACT_APP_GIT_HASH%',
+					'all'
+				);
+				loadStyle(
+					'/css/smls-lgpd-banner.min.css?v=%REACT_APP_GIT_HASH%',
+					'all'
+				);
+			})(window, document);
+		</script>
+	</head>
+
+	<body>
+		<div id="root"></div>
+	</body>
+</html>
