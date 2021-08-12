@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Lgpd from './containers/LgpdBanner/index';
+import Lightbox from './containers/Lightbox/index';
 import { init } from './services/core/index';
 
-const App: React.FC = ()=> {
-	const [coreHasInitialized, setCoreHasInitialized] = useState<boolean>(false);
+const App: React.FC = () => {
+	const [coreHasInitialized, setCoreHasInitialized] =
+		useState<boolean>(false);
 	useEffect(() => {
 		const initializeCore = async (): Promise<void> => {
 			await init();
@@ -14,14 +15,12 @@ const App: React.FC = ()=> {
 
 	return (
 		<>
-			{coreHasInitialized ?
+			{coreHasInitialized ? (
 				<div className='main-portal'>
-					<Lgpd />
+					<Lightbox />
 				</div>
-				:
-				null
-			}
+			) : null}
 		</>
 	);
-}
+};
 export default App;

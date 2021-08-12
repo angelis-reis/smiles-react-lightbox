@@ -1,1 +1,1 @@
-# smiles-react-lgpd-banner
+# smiles-react-Lightbox-banner

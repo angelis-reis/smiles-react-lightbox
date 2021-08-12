@@ -5,13 +5,13 @@ import {
 	waitForElementToBeRemoved
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Lgpd from './index';
+import Lightbox from './index';
 import * as mockGetTerms from '../../services/getTerms/index';
-const lgpdText: string =
+const LightboxText: string =
 	'Utilizamos cookies e outras tecnologias pra melhorar a sua experiência no nosso site.';
 global.scroll = jest.fn();
 
-describe('Lgpd', () => {
+describe('Lightbox', () => {
 	afterEach(() => {
 		jest.useRealTimers();
 		jest.clearAllMocks();
@@ -22,7 +22,7 @@ describe('Lgpd', () => {
 			modalTitle: 'Titulo do modal',
 			modalText: '<p>Texto do modal</p>'
 		});
-		await act(async () => render(<Lgpd />));
+		await act(async () => render(<Lightbox />));
 		const policyButton = screen.getByText(
 			/ler regulamento/i
 		) as HTMLElement;
@@ -34,12 +34,14 @@ describe('Lgpd', () => {
 	});
 
 	it(' should be able renders correctly', () => {
-		render(<Lgpd />);
-		const lgpdBannerText = screen.getByText(lgpdText) as HTMLElement;
-		expect(lgpdBannerText).toBeInTheDocument();
+		render(<Lightbox />);
+		const LightboxBannerText = screen.getByText(
+			LightboxText
+		) as HTMLElement;
+		expect(LightboxBannerText).toBeInTheDocument();
 	});
 	it(' should be able to render modal text content ', async () => {
-		render(<Lgpd />);
+		render(<Lightbox />);
 		const policyButton = screen.getByText(
 			/ler regulamento/i
 		) as HTMLElement;
@@ -53,12 +55,14 @@ describe('Lgpd', () => {
 		expect(modalData).toBeInTheDocument();
 	});
 	it(' should be able to render cookies text', () => {
-		render(<Lgpd />);
-		const lgpdBannerText = screen.getByText(lgpdText) as HTMLElement;
-		expect(lgpdBannerText).toBeInTheDocument();
+		render(<Lightbox />);
+		const LightboxBannerText = screen.getByText(
+			LightboxText
+		) as HTMLElement;
+		expect(LightboxBannerText).toBeInTheDocument();
 	});
 	it(' should be able to open modal by clicking on "read policy" button', () => {
-		render(<Lgpd />);
+		render(<Lightbox />);
 		const policyButton = screen.getByText(
 			/ler regulamento/i
 		) as HTMLElement;
@@ -70,15 +74,15 @@ describe('Lgpd', () => {
 		expect(modalElement).toBeInTheDocument();
 	});
 	it(' should be able to close banner by clicking on "accept" button', async () => {
-		render(<Lgpd />);
-		expect(screen.queryByText(lgpdText)).toBeInTheDocument();
+		render(<Lightbox />);
+		expect(screen.queryByText(LightboxText)).toBeInTheDocument();
 		const acceptButton = screen.getByText(/aceitar/i) as HTMLElement;
 		userEvent.click(acceptButton);
-		expect(screen.queryByText(lgpdText)).not.toBeInTheDocument();
+		expect(screen.queryByText(LightboxText)).not.toBeInTheDocument();
 		localStorage.clear();
 	});
 	it(' should be able to close modal by clicking on close button', async () => {
-		render(<Lgpd />);
+		render(<Lightbox />);
 		const policyButton = screen.getByText(
 			/ler regulamento/i
 		) as HTMLElement;
@@ -103,7 +107,7 @@ describe('Lgpd', () => {
 		localStorage.clear();
 	});
 	it(' should be able to close modal by clicking outside of modal', async () => {
-		render(<Lgpd />);
+		render(<Lightbox />);
 		const policyButton = screen.getByText(
 			/ler regulamento/i
 		) as HTMLElement;
@@ -125,13 +129,14 @@ describe('Lgpd', () => {
 		localStorage.clear();
 	});
 	it(' should be able to check the modal checkbox and close modal and banner by clicking on close button', () => {
-		const renderBanner = render(<Lgpd />);
-		const lgpdBannerDiv = renderBanner.container.querySelector('.lgpd');
+		const renderBanner = render(<Lightbox />);
+		const LightboxBannerDiv =
+			renderBanner.container.querySelector('.Lightbox');
 		const policyButton = screen.getByText(
 			/ler regulamento/i
 		) as HTMLElement;
-		if (lgpdBannerDiv) {
-			expect(lgpdBannerDiv).toBeInTheDocument();
+		if (LightboxBannerDiv) {
+			expect(LightboxBannerDiv).toBeInTheDocument();
 		}
 		userEvent.click(policyButton);
 		const modalElement = document.querySelector(
@@ -149,17 +154,18 @@ describe('Lgpd', () => {
 		expect(checkBox).toBeChecked();
 		userEvent.click(closeModalButton);
 		expect(modalElement).not.toBeInTheDocument();
-		expect(lgpdBannerDiv).not.toBeInTheDocument();
+		expect(LightboxBannerDiv).not.toBeInTheDocument();
 		localStorage.clear();
 	});
 	it(' should be able to check the modal checkbox and close modal and banner by clicking outside of modal', async () => {
-		const renderBanner = render(<Lgpd />);
-		const lgpdBannerDiv = renderBanner.container.querySelector('.lgpd');
+		const renderBanner = render(<Lightbox />);
+		const LightboxBannerDiv =
+			renderBanner.container.querySelector('.Lightbox');
 		const policyButton = screen.getByText(
 			/ler regulamento/i
 		) as HTMLElement;
-		if (lgpdBannerDiv) {
-			expect(lgpdBannerDiv).toBeInTheDocument();
+		if (LightboxBannerDiv) {
+			expect(LightboxBannerDiv).toBeInTheDocument();
 		}
 		userEvent.click(policyButton);
 		const modalElement = document.querySelector(
@@ -184,20 +190,21 @@ describe('Lgpd', () => {
 			)
 		);
 		expect(closeModalButton).not.toBeInTheDocument();
-		expect(lgpdBannerDiv).not.toBeInTheDocument();
+		expect(LightboxBannerDiv).not.toBeInTheDocument();
 		localStorage.clear();
 	});
 	it(' should be able to check the modal checkbox, unchecked it and close only modal by clicking on close button', async () => {
-		const renderBanner = render(<Lgpd />);
-		const lgpdBannerText = screen.getByText(
+		const renderBanner = render(<Lightbox />);
+		const LightboxBannerText = screen.getByText(
 			/utilizamos cookies e outras tecnologias pra melhorar a sua experiência no nosso site\./i
 		);
-		const lgpdBannerDiv = renderBanner.container.querySelector('.lgpd');
+		const LightboxBannerDiv =
+			renderBanner.container.querySelector('.Lightbox');
 		const policyButton = screen.getByText(
 			/ler regulamento/i
 		) as HTMLElement;
-		if (lgpdBannerDiv) {
-			expect(lgpdBannerDiv).toBeInTheDocument();
+		if (LightboxBannerDiv) {
+			expect(LightboxBannerDiv).toBeInTheDocument();
 		}
 		userEvent.click(policyButton);
 		const modalElement = document.querySelector(
@@ -222,11 +229,11 @@ describe('Lgpd', () => {
 			)
 		);
 		expect(closeModalButton).not.toBeInTheDocument();
-		expect(lgpdBannerText).toBeInTheDocument();
+		expect(LightboxBannerText).toBeInTheDocument();
 		localStorage.clear();
 	});
 	it(' should be able to render modal content text', () => {
-		render(<Lgpd />);
+		render(<Lightbox />);
 		const policyButton = screen.getByText(
 			/ler regulamento/i
 		) as HTMLElement;
@@ -237,7 +244,7 @@ describe('Lgpd', () => {
 		expect(policyModalContent).toBeInTheDocument();
 	});
 	it(' should be able to render progressbar ', () => {
-		render(<Lgpd />);
+		render(<Lightbox />);
 		const policyButton = screen.getByText(
 			/ler regulamento/i
 		) as HTMLElement;
@@ -252,29 +259,29 @@ describe('Lgpd', () => {
 		expect(scrollBar).toBeInTheDocument();
 	});
 	it(' should be able to save a "accepted" cookie in localStorage by clicking on "accept" button', async () => {
-		render(<Lgpd />);
-		expect(screen.queryByText(lgpdText)).toBeInTheDocument();
+		render(<Lightbox />);
+		expect(screen.queryByText(LightboxText)).toBeInTheDocument();
 		const acceptButton = screen.getByText(/aceitar/i) as HTMLElement;
 		userEvent.click(acceptButton);
-		expect(screen.queryByText(lgpdText)).not.toBeInTheDocument();
+		expect(screen.queryByText(LightboxText)).not.toBeInTheDocument();
 		const cookie = localStorage.getItem('cookies');
 		expect(cookie).toMatch('accepted');
 		localStorage.clear();
 	});
 	it(' should not be able to render banner on page reload after accepted cookies', async () => {
-		render(<Lgpd />);
-		expect(screen.queryByText(lgpdText)).toBeInTheDocument();
+		render(<Lightbox />);
+		expect(screen.queryByText(LightboxText)).toBeInTheDocument();
 		const acceptButton = screen.getByText(/aceitar/i) as HTMLElement;
 		userEvent.click(acceptButton);
-		expect(screen.queryByText(lgpdText)).not.toBeInTheDocument();
+		expect(screen.queryByText(LightboxText)).not.toBeInTheDocument();
 		const cookie = localStorage.getItem('cookies');
 		expect(cookie).toMatch('accepted');
-		render(<Lgpd />);
-		expect(screen.queryByText(lgpdText)).not.toBeInTheDocument();
+		render(<Lightbox />);
+		expect(screen.queryByText(LightboxText)).not.toBeInTheDocument();
 		localStorage.clear();
 	});
 	it(' should be able to check the modal checkbox and save a "accepted" cookie in localStorage ', async () => {
-		render(<Lgpd />);
+		render(<Lightbox />);
 		const policyButton = screen.getByText(
 			/ler regulamento/i
 		) as HTMLElement;
@@ -292,7 +299,7 @@ describe('Lgpd', () => {
 		localStorage.clear();
 	});
 	it(' should be able to check the modal checkbox and save a "accepted" cookie in localStorage, then unchecked it and erase the cookie in localStorage ', async () => {
-		render(<Lgpd />);
+		render(<Lightbox />);
 		const policyButton = screen.getByText(
 			/ler regulamento/i
 		) as HTMLElement;
@@ -314,13 +321,13 @@ describe('Lgpd', () => {
 	});
 	it(' should be able to show banner 800ms after render', async () => {
 		jest.useFakeTimers();
-		render(<Lgpd />);
+		render(<Lightbox />);
 		act(() => {
 			jest.advanceTimersByTime(900);
 		});
-		const lgpdBannerText = document.querySelector(
-			'.lgpd-banner'
+		const LightboxBannerText = document.querySelector(
+			'.Lightbox-banner'
 		) as HTMLElement;
-		expect(lgpdBannerText).toBeInTheDocument();
+		expect(LightboxBannerText).toBeInTheDocument();
 	});
 });

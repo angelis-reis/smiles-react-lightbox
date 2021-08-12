@@ -13,7 +13,7 @@ const getTerms = async (): Promise<IFinalResponse> => {
 			{
 				param: 'friendlyUrlPath',
 				conditional: 'eq',
-				value: 'lgpd_politica_cookies'
+				value: 'Lightbox_politica_cookies'
 			}
 		]
 	});
