@@ -7,6 +7,8 @@ import {
 } from '@smiles/smiles-ui-kit-react';
 import { asyncGetTerms } from '../../services/getTerms/index';
 import Cards from "../../assets/images/cards.png"
+import Logo from '../../assets/images/logo.png';
+
 
 const Lightbox: React.FC = () => {
 
@@ -14,16 +16,28 @@ const Lightbox: React.FC = () => {
 
 	const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(true);
 
-	const [hasRulesCheckbox, setHasRulesCheckbox] =
-		useState<boolean>(true);
+
+	const [hasLogo, setHasLogo] = useState<boolean>(false);
+	const [hasLightboxContent, setHasLightboxContent] = useState<boolean>(true);
+	const [hasCards, setHasCards] = useState<boolean>(false);
+	const [hasRulesCheckbox, setHasRulesCheckbox] = useState<boolean>(true);
+	const [hasHelpButton, setHasHelpButton] = useState<boolean>(true);
+	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>(false);
+
+
+
+
 	const [rulesCheckboxIsChecked, setRulesCheckboxIsChecked] =
 		useState<boolean>(false);
-	const [hasOptOutCheckbox, setHasOptOutCheckbox] =
-		useState<boolean>(true);
+
 	const [optOutCheckboxIsChecked, setOptOutCheckboxIsChecked] =
 		useState<boolean>(false);
-	const [hasCards, setHasCards] = useState<boolean>(true);
+
+
 	const [modalWidthClass, setModalWidthClass] = useState<string>('');
+	const [confirmButtonColor, setConfirmButtonColor] =
+		useState<string>('');
+
 
 
 	// states to render
@@ -60,8 +74,19 @@ const Lightbox: React.FC = () => {
 	>('/club/smiles/client');
 
 	const [confirmCheckboxText, setConfirmCheckboxText] = useState<string | undefined>(
-		`<style>.modal-body__terms {padding: 0 8px 0 8px;    border: 1px solid white;    border-radius: 4px;}.modal-body__terms label{margin-top: 8px;}.terms-text-lbx {padding: 0 0 0 32px;}.terms-text-lbx a{text-decoration: underline;}</style><p class="terms-text-lbx">Eu aceito o <a href="/clube-smiles/regulamento/"  target='_blank'>Regulamento do Clube Smiles</a>`
+		`<style>
+            .terms-text-lbx a{
+                text-decoration: underline;
+            }
+        </style>
+        <span class="terms-text-lbx">
+            Li e aceito o <a href="/clube-smiles/regulamento/"  target='_blank'>Regulamento do Clube Smiles</a>
+        </span>
+        `
 	);
+	const [optOutCheckboxText, setOptOutCheckboxText] = useState<
+		string | undefined
+	>('Não exibir essa mensagem novamente');
 	const [confirmButtonType, setConfirmButtonType] = useState<
 		string | undefined
 	>('CALLBACK');
@@ -72,9 +97,6 @@ const Lightbox: React.FC = () => {
 		string | undefined
 	>('/minhaconta/meusdados');
 	const [buttonColor, setButtonColor] = useState('secondary');
-	const [cancelButtonText, setCancelButtonText] = useState<
-		string | undefined
-	>('Não desejo receber mais milhas');
 
 
 
@@ -156,16 +178,18 @@ const Lightbox: React.FC = () => {
 				toggle={() => setIsOpenlightbox(!isOpenlightbox)}
 				className={modalWidthClass}
 			>
-				<img className='modal-logo'></img>
+				{hasLogo ? <img className='modal-logo' src={Logo} /> : null}
 
 				<h4 className='modal-title'>{lightboxTitle}</h4>
 
-				<section
-					className='modal-html-content'
-					dangerouslySetInnerHTML={{
-						__html: `${lightboxContent}`
-					}}
-				/>
+				{hasLightboxContent ? (
+					<section
+						className='modal-html-content'
+						dangerouslySetInnerHTML={{
+							__html: `${lightboxContent}`
+						}}
+					/>
+				) : null}
 
 				{hasCards ? (
 					<div className='modal-cards'>
@@ -173,40 +197,46 @@ const Lightbox: React.FC = () => {
 					</div>
 				) : null}
 
-				<div className='rules-checkbox'>
-					<SmlsCheckbox
-						className='modal-rules-checkbox'
-						id=''
-						checked={rulesCheckboxIsChecked}
-						onClick={checkRulesCheckbox}
-					/>
-					<p
-						dangerouslySetInnerHTML={{
-							__html: `${confirmCheckboxText}`
-						}}
-						className='modal-rules-checkbox-text'
-					/>
-				</div>
+				{hasRulesCheckbox ? (
+					<div className='rules-checkbox'>
+						<SmlsCheckbox
+							className='modal-rules-checkbox'
+							id=''
+							checked={rulesCheckboxIsChecked}
+							onClick={checkRulesCheckbox}
+						/>
+						<span
+							className='modal-rules-checkbox-text'
+							dangerouslySetInnerHTML={{
+								__html: `${confirmCheckboxText}`
+							}}
+						/>
+					</div>
+				) : null}
 
 				<SmlsButton
+					className='modal-confirm-button'
 					id='btn_confirmPassword'
 					color='primary'
 					text={confirmButtonText}
 					onClick={() => console.log('Koca: ')}
-					className='modal-confirm-button'
 				/>
 
-				<a className='modal-help-button' href='helpButtonAction'>
-					{helpButtonText}
-				</a>
+				{hasHelpButton ? (
+					<a className='modal-help-button' href='helpButtonAction'>
+						{helpButtonText}
+					</a>
+				) : null}
 
-				<SmlsCheckbox
-					className='modal-opt-out-checkbox'
-					id=''
-					label='Não exibir essa mensagem novamente'
-					checked={optOutCheckboxIsChecked}
-					onClick={checkOptOutCheckbox}
-				/>
+				{hasOptOutCheckbox ? (
+					<SmlsCheckbox
+						className='modal-opt-out-checkbox'
+						id=''
+						label={optOutCheckboxText}
+						checked={optOutCheckboxIsChecked}
+						onClick={checkOptOutCheckbox}
+					/>
+				) : null}
 			</SmlsModal>
 		</>
 	);
