@@ -9,7 +9,10 @@ import Cards from '../../assets/images/cards.png';
 import Logo from '../../assets/images/logo.png';
 
 const Lightbox: React.FC = () => {
-	const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(true);
+	const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(false);
+	const [optOutCookies, setOptOutCookies] = useState(
+		localStorage.getItem('cookies')
+	);
 
 	const [hasLogo, setHasLogo] = useState<boolean>(false);
 	const [hasLightboxContent, setHasLightboxContent] = useState<boolean>(true);
@@ -17,8 +20,7 @@ const Lightbox: React.FC = () => {
 		useState<boolean>(false);
 	const [hasRulesCheckbox, setHasRulesCheckbox] = useState<boolean>(true);
 	const [hasHelpButton, setHasHelpButton] = useState<boolean>(true);
-	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>(false);
-
+	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>(true);
 	const [rulesCheckboxIsChecked, setRulesCheckboxIsChecked] =
 		useState<boolean>(false);
 	const [optOutCheckboxIsChecked, setOptOutCheckboxIsChecked] =
@@ -105,6 +107,20 @@ const Lightbox: React.FC = () => {
 		}
 	};
 
+	const checkRulesCheckbox = (): void => {
+		setRulesCheckboxIsChecked((prevState) => !prevState);
+	};
+	const checkOptOutCheckbox = (): void => {
+		setOptOutCheckboxIsChecked((prevState) => !prevState);
+		if (!optOutCheckboxIsChecked) {
+			localStorage.setItem('cookies', 'optedOut');
+			setOptOutCookies('optedOut');
+		} else {
+			localStorage.removeItem('cookies');
+			setOptOutCookies('optedOut');
+		}
+	};
+
 	useEffect(() => {
 		// getData();
 		modalWidth();
@@ -117,14 +133,9 @@ const Lightbox: React.FC = () => {
 		};
 	}, []);
 
-	const checkRulesCheckbox = (): void => {
-		setRulesCheckboxIsChecked((prevState) => !prevState);
-	};
-	const checkOptOutCheckbox = (): void => {
-		setOptOutCheckboxIsChecked((prevState) => !prevState);
-	};
-
-	useEffect(() => {}, []);
+	if (optOutCookies === 'optedOut' && !isOpenlightbox ) {
+		return null;
+	}
 
 	return (
 		<>
@@ -158,7 +169,7 @@ const Lightbox: React.FC = () => {
 					<div className='rules-checkbox'>
 						<SmlsCheckbox
 							className='modal-rules-checkbox'
-							id=''
+							id='acceptRules'
 							checked={rulesCheckboxIsChecked}
 							onClick={checkRulesCheckbox}
 						/>
@@ -188,7 +199,7 @@ const Lightbox: React.FC = () => {
 				{hasOptOutCheckbox ? (
 					<SmlsCheckbox
 						className='modal-opt-out-checkbox'
-						id=''
+						id='optOut'
 						label={optOutCheckboxText}
 						checked={optOutCheckboxIsChecked}
 						onClick={checkOptOutCheckbox}
