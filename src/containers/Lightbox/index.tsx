@@ -9,10 +9,12 @@ import Cards from '../../assets/images/cards.png';
 import Logo from '../../assets/images/logo.png';
 
 const Lightbox: React.FC = () => {
+
 	const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(false);
 	const [optOutCookies, setOptOutCookies] = useState(
 		localStorage.getItem('cookies')
 	);
+
 
 	const [hasLogo, setHasLogo] = useState<boolean>(false);
 	const [hasLightboxContent, setHasLightboxContent] = useState<boolean>(true);
@@ -63,7 +65,7 @@ const Lightbox: React.FC = () => {
 	const [confirmButtonAction, setConfirmButtonAction] = useState<
 		string | undefined
 	>('/minhaconta/meusdados');
-	const [buttonColor, setButtonColor] = useState('secondary');
+	const [buttonColor, setButtonColor] = useState('color-product-club');
 
 	// states for logic
 
@@ -112,11 +114,11 @@ const Lightbox: React.FC = () => {
 	};
 	const checkOptOutCheckbox = (): void => {
 		setOptOutCheckboxIsChecked((prevState) => !prevState);
-		if (!optOutCheckboxIsChecked) {
+	};
+
+	const closeModal = () => {
+		if (optOutCheckboxIsChecked) {
 			localStorage.setItem('cookies', 'optedOut');
-			setOptOutCookies('optedOut');
-		} else {
-			localStorage.removeItem('cookies');
 			setOptOutCookies('optedOut');
 		}
 	};
@@ -133,9 +135,32 @@ const Lightbox: React.FC = () => {
 		};
 	}, []);
 
-	if (optOutCookies === 'optedOut' && !isOpenlightbox ) {
+	if (optOutCookies === 'optedOut') {
 		return null;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 
 	return (
 		<>
@@ -144,6 +169,7 @@ const Lightbox: React.FC = () => {
 				isOpen={isOpenlightbox}
 				type='right'
 				toggle={() => setIsOpenlightbox(!isOpenlightbox)}
+				onClosed={closeModal}
 				className={modalWidthClass}
 			>
 				{hasLogo ? <img className='modal-logo' src={Logo} /> : null}
@@ -182,13 +208,14 @@ const Lightbox: React.FC = () => {
 					</div>
 				) : null}
 
-				<SmlsButton
-					className='modal-confirm-button'
-					id='btn_confirmPassword'
-					color='primary'
-					text={confirmButtonText}
-					onClick={() => console.log('Koca: ')}
-				/>
+				<div className='modal-confirm-button'>
+					<SmlsButton
+						className={buttonColor}
+						id='btn_confirmPassword'
+						text={confirmButtonText}
+						onClick={() => console.log('Koca: ')}
+					/>
+				</div>
 
 				{hasHelpButton ? (
 					<a className='modal-help-button' href='helpButtonAction'>
