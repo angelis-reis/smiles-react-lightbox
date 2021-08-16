@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Redirect } from 'react-router-dom';
+
 import {
 	SmlsModal,
 	SmlsCheckbox,
@@ -9,18 +11,16 @@ import Cards from '../../assets/images/cards.png';
 import Logo from '../../assets/images/logo.png';
 
 const Lightbox: React.FC = () => {
-
 	const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(false);
 	const [optOutCookies, setOptOutCookies] = useState(
 		localStorage.getItem('cookies')
 	);
 
-
 	const [hasLogo, setHasLogo] = useState<boolean>(false);
 	const [hasLightboxContent, setHasLightboxContent] = useState<boolean>(true);
 	const [hasPromotionalCards, setHasPromotionalCards] =
 		useState<boolean>(false);
-	const [hasRulesCheckbox, setHasRulesCheckbox] = useState<boolean>(true);
+	const [hasRulesCheckbox, setHasRulesCheckbox] = useState<boolean>(false);
 	const [hasHelpButton, setHasHelpButton] = useState<boolean>(true);
 	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>(true);
 	const [rulesCheckboxIsChecked, setRulesCheckboxIsChecked] =
@@ -29,6 +29,7 @@ const Lightbox: React.FC = () => {
 		useState<boolean>(false);
 	const [modalWidthClass, setModalWidthClass] = useState<string>('');
 	const [confirmButtonColor, setConfirmButtonColor] = useState<string>('');
+	const [confirmButtonActive, setConfirmButtonActive] = useState(true);
 
 	// states to render
 
@@ -111,11 +112,11 @@ const Lightbox: React.FC = () => {
 
 	const checkRulesCheckbox = (): void => {
 		setRulesCheckboxIsChecked((prevState) => !prevState);
+		setConfirmButtonActive((prevState) => !prevState);
 	};
 	const checkOptOutCheckbox = (): void => {
 		setOptOutCheckboxIsChecked((prevState) => !prevState);
 	};
-
 	const closeModal = () => {
 		if (optOutCheckboxIsChecked) {
 			localStorage.setItem('cookies', 'optedOut');
@@ -126,6 +127,10 @@ const Lightbox: React.FC = () => {
 	useEffect(() => {
 		// getData();
 		modalWidth();
+
+		if (hasRulesCheckbox) {
+			setConfirmButtonActive(false);
+		}
 
 		const showModal = setTimeout(() => {
 			setIsOpenlightbox(true);
@@ -139,28 +144,73 @@ const Lightbox: React.FC = () => {
 		return null;
 	}
 
+	// 	let actionController = {
+	// 		goToCheckout: function (milesQuantity, typePayment) {
+	// 			let chosenPlanURL = '';
+	// 			let addToCheckoutURL = '';
+	// 			let namespaceCheckout = '';
+	// 			let stringParams = '';
+	// 			let div = parent.document.getElementById('alertaModaloadingairplane');
+	// 			div.style.display = 'block';
+	// 			div.style.zIndex = 2147483647;
+	// 			div.className += \" in\";
+	// 			parent.document.getElementById('newLightModal').style.display = 'none';
+	// 			let xhttp_clubChangePlan = new XMLHttpRequest();
+	// 			xhttp_clubChangePlan.onreadystatechange = function () {
+	// 				if (this.readyState == 4 && this.status == 200) {
+	// 					let parser = new DOMParser();
+	// 					let doc = parser.parseFromString(xhttp_clubChangePlan.responseText, \"text/html\");
+	// 					chosenPlanURL = doc.getElementById('chosenPlanAvailableURL').value;
+	// 					addToCheckoutURL = doc.getElementById('addToCheckoutURL').value;
+	// 					namespaceCheckout = doc.getElementById('namespace').value;
+	// 					stringParams += '&' + namespaceCheckout + 'milesQuantity=' + milesQuantity + '&' + namespaceCheckout + 'typePayment=' + typePayment; console.log(addToCheckoutURL + stringParams);
+	// 					xhttp_addToCheckout.open(\"GET\", addToCheckoutURL + stringParams, true);
+	// 					xhttp_addToCheckout.timeout = 45000;
+	// 					xhttp_addToCheckout.send();
+	// 				}
 
+	// 			}
+	// 			let xhttp_addToCheckout = new XMLHttpRequest();
+	// 			xhttp_addToCheckout.onreadystatechange = function () {
+	// 				if (this.readyState == 4 && this.status == 200) {
+	// 					console.log(xhttp_addToCheckout.responseText)
+	// 				}
+	// 			}
+	// 			xhttp_addToCheckout.ontimeout = function () {
+	// 				console.error(\"The request timed out.\")
+	// 			};
+	// 			xhttp_addToCheckout.onload = function () {
+	// 						if (this.readyState == 4 && this.status == 200) {
+	// 							console.log(xhttp_addToCheckout.responseText)
+	// 							try {
+	// 								data = JSON.parse(xhttp_addToCheckout.responseText);
+	// 							} catch (e) {
+	// 								console.error(e);
+	// 							}
+	// 							if (data.successOrderId) {
+	// 								window.open('/group/guest/checkout/sucesso?orderId=' + data.successOrderId, '_parent');
+	// 							}
+	// 							else if (data.status) {
+	// 								window.open('/group/guest/checkout', '_parent');
+	// 							} else {
+	// 								if (data.errorCode === \"201\") {
+	// 								console.log(\"Error redirecting to checkout\");console.log(data);
+	// 							}
+	// 							else {
+	// 								console.log(\"Error redirecting to checkout\");
+	// 								console.log(data);
+	// 				}
+	// 				parent.document.getElementById('alertaModaloadingairplane').style.display = 'none';
+	// 			}
+	// 		}
+	// 	};
+	// 	xhttp_clubChangePlan.open(\"GET\", window.location.origin + '/clube-smiles/clientes', true);
+	// 	xhttp_clubChangePlan.send();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
+	// }, redirectUser: function () {
+	// 		window.open(window.location.origin + '/group/guest/minha-conta/clube-smiles/mudar-de-plano', '_parent');
+	// }
+	// }
 
 	return (
 		<>
@@ -211,14 +261,16 @@ const Lightbox: React.FC = () => {
 				<div className='modal-confirm-button'>
 					<SmlsButton
 						className={buttonColor}
+						color= "primary"
 						id='btn_confirmPassword'
 						text={confirmButtonText}
 						onClick={() => console.log('Koca: ')}
+						disabled={!confirmButtonActive}
 					/>
 				</div>
 
 				{hasHelpButton ? (
-					<a className='modal-help-button' href='helpButtonAction'>
+					<a className='modal-help-button' href={helpButtonAction}>
 						{helpButtonText}
 					</a>
 				) : null}
