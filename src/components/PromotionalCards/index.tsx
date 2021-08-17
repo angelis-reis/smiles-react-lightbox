@@ -6,28 +6,29 @@ import Airplane from '../../assets/icons/flight.svg';
 export type { IPromotionalCard };
 
 export const PromotionalCard: React.FC<IPromotionalCard> = ({
+	key,
 	cardPromotion,
 	cardOrigin,
 	cardDestiny,
 	cardText,
 	cardPrice,
 	cardIconPath,
+	cardImagePath,
 	...props
 }) => {
-	useEffect(() => {}, []);
+	// let cardIcon = require(`../../assets/icons/flight.svg`);
+
+	console.log('Koca: ', );
 
 	return (
-		<div className='promotional-card'>
-			{/* <img
-				className='card-image'
-				src={Porto}
-				alt='Porto Alegre'
-			/> */}
-
+		<div
+			className='promotional-card'
+			style={{ backgroundImage: `url(${cardImagePath.default})` }}
+		>
 			<div className='wrapper'>
 				<img
 					className='card-icon'
-					src={cardIconPath}
+					src={cardIconPath.default}
 					alt='Ícone de avião'
 				/>
 

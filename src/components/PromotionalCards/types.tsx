@@ -1,8 +1,13 @@
 export interface IPromotionalCard {
+	key?: number | string;
 	/**
 	 * PromotionalCard color
 	 */
-	cardIconPath?: string;
+	cardImagePath?: any;
+	/**
+	 * PromotionalCard color
+	 */
+	cardIconPath?: any;
 	/**
 	 * PromotionalCard color
 	 */
