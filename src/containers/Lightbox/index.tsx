@@ -7,22 +7,23 @@ import {
 	SmlsButton
 } from '@smiles/smiles-ui-kit-react';
 import { asyncGetTerms } from '../../services/getTerms/index';
-import Cards from '../../assets/images/cards.png';
+import { PromotionalCard } from '../../components/PromotionalCards/index';
+
 import Logo from '../../assets/images/logo.png';
 
 const Lightbox: React.FC = () => {
-	const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(false);
+	const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(true);
 	const [optOutCookies, setOptOutCookies] = useState(
 		localStorage.getItem('cookies')
 	);
 
 	const [hasLogo, setHasLogo] = useState<boolean>(false);
-	const [hasLightboxContent, setHasLightboxContent] = useState<boolean>(true);
+	const [hasLightboxContent, setHasLightboxContent] = useState<boolean>(false);
 	const [hasPromotionalCards, setHasPromotionalCards] =
-		useState<boolean>(false);
+		useState<boolean>(true);
 	const [hasRulesCheckbox, setHasRulesCheckbox] = useState<boolean>(false);
-	const [hasHelpButton, setHasHelpButton] = useState<boolean>(true);
-	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>(true);
+	const [hasHelpButton, setHasHelpButton] = useState<boolean>(false);
+	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>(false);
 	const [rulesCheckboxIsChecked, setRulesCheckboxIsChecked] =
 		useState<boolean>(false);
 	const [optOutCheckboxIsChecked, setOptOutCheckboxIsChecked] =
@@ -67,6 +68,19 @@ const Lightbox: React.FC = () => {
 		string | undefined
 	>('/minhaconta/meusdados');
 	const [buttonColor, setButtonColor] = useState('color-product-club');
+
+	const [cardPromotion, setCardPromotion] = useState(
+		'15% OFF com Clube Smiles'
+	);
+	const [cardOrigin, setCardOrigin] = useState('Santarém (STM)');
+	const [cardDestiny, setCardDestiny] = useState('Saindo de Brasília (BSB)');
+	const [cardText, setCardText] = useState('A partir de');
+	const [cardPrice, setCardPrice] = useState('6.400 milhas/trecho');
+	const [cardIconPath, setCardIconPath] = useState(
+		'https://static.smiler.com.br/bs-theme/assets/logos/smiles/lg-smiles-white.svg'
+	);
+
+
 
 	// states for logic
 
@@ -237,7 +251,14 @@ const Lightbox: React.FC = () => {
 
 				{hasPromotionalCards ? (
 					<div className='modal-cards'>
-						<img src={Cards} />
+						<PromotionalCard
+							cardIconPath={cardIconPath}
+							cardPromotion={cardPromotion}
+							cardOrigin={cardOrigin}
+							cardDestiny={cardDestiny}
+							cardText={cardText}
+							cardPrice={cardPrice}
+						/>
 					</div>
 				) : null}
 
@@ -261,7 +282,7 @@ const Lightbox: React.FC = () => {
 				<div className='modal-confirm-button'>
 					<SmlsButton
 						className={buttonColor}
-						color= "primary"
+						color='primary'
 						id='btn_confirmPassword'
 						text={confirmButtonText}
 						onClick={() => console.log('Koca: ')}
