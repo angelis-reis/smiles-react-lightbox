@@ -18,7 +18,7 @@ export const PromotionalCard: React.FC<IPromotionalCard> = ({
 }) => {
 	// let cardIcon = require(`../../assets/icons/flight.svg`);
 
-	console.log('Koca: ', );
+	console.log('Koca: cardIconPath ', cardIconPath);
 
 	return (
 		<div

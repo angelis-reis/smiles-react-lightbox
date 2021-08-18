@@ -82,17 +82,16 @@ const Lightbox: React.FC = () => {
 	);
 
 	const [cards, setCards] = useState([
-		// {
-		// 	id: 436969,
-		// 	iconPath: '/src/assets/icons/flight.svg',
-		// 	imagePath:
-		// 		'https://www.smiles.com.br/documents/20124/59884/login_opt1.jpg/ed8d40b5-cdb9-6afa-d6e8-4ddda77495de?t=1609444388733',
-		// 	promotion: '15% OFF com Clube Smiles',
-		// 	flyDestiny: 'Santarém (STM)',
-		// 	flyOrigin: 'Saindo de Brasília (BSB)',
-		// 	text: 'A partir de',
-		// 	flyPrice: '6.400 milhas/trecho'
-		// },
+		{
+			id: 436969,
+			iconPath: '../../assets/icons/flight.svg',
+			imagePath: '../../assets/images/porto-alegre.png',
+			promotion: '15% OFF com Clube Smiles',
+			flyDestiny: 'Santarém (STM)',
+			flyOrigin: 'Saindo de Brasília (BSB)',
+			text: 'A partir de',
+			flyPrice: '6.400 milhas/trecho'
+		},
 		{
 			id: 435979,
 			iconPath: '../../assets/icons/flight.svg',
@@ -249,6 +248,8 @@ const Lightbox: React.FC = () => {
 	// }
 	// }
 
+
+
 	return (
 		<>
 			<SmlsModal
@@ -288,6 +289,7 @@ const Lightbox: React.FC = () => {
 							<PromotionalCard
 								key={card.id}
 								cardIconPath={require('../../assets/icons/flight.svg')}
+								// cardIconPath={require(card.promotion)}
 								cardImagePath={require('../../assets/images/porto-alegre.png')}
 								cardPromotion={card.promotion}
 								cardOrigin={card.flyOrigin}
