@@ -16,16 +16,17 @@ export const PromotionalCard: React.FC<IPromotionalCard> = ({
 	cardImagePath,
 	...props
 }) => {
+	useEffect(() => {}, []);
 	// let cardIcon = require(`../../assets/icons/flight.svg`);
 
-	console.log('Koca: cardIconPath ', cardIconPath);
+	// console.log('Koca: cardIconPath ', cardIconPath);
 
 	return (
 		<div
 			className='promotional-card'
 			style={{ backgroundImage: `url(${cardImagePath.default})` }}
 		>
-			<div className='wrapper'>
+			<div className='card-wrapper'>
 				<img
 					className='card-icon'
 					src={cardIconPath.default}

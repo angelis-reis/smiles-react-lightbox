@@ -17,14 +17,13 @@ const Lightbox: React.FC = () => {
 		localStorage.getItem('cookies')
 	);
 
-	const [hasLogo, setHasLogo] = useState<boolean>(false);
-	const [hasLightboxContent, setHasLightboxContent] =
-		useState<boolean>(false);
+	const [hasLogo, setHasLogo] = useState<boolean>(true);
+	const [hasLightboxContent, setHasLightboxContent] = useState<boolean>(true);
 	const [hasPromotionalCards, setHasPromotionalCards] =
 		useState<boolean>(true);
-	const [hasRulesCheckbox, setHasRulesCheckbox] = useState<boolean>(false);
-	const [hasHelpButton, setHasHelpButton] = useState<boolean>(false);
-	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>(false);
+	const [hasRulesCheckbox, setHasRulesCheckbox] = useState<boolean>(true);
+	const [hasHelpButton, setHasHelpButton] = useState<boolean>(true);
+	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>(true);
 	const [rulesCheckboxIsChecked, setRulesCheckboxIsChecked] =
 		useState<boolean>(false);
 	const [optOutCheckboxIsChecked, setOptOutCheckboxIsChecked] =
