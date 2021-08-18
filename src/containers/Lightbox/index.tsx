@@ -83,8 +83,9 @@ const Lightbox: React.FC = () => {
 	const [cards, setCards] = useState([
 		{
 			id: 436969,
-			iconPath: '../../assets/icons/flight.svg',
-			imagePath: '../../assets/images/porto-alegre.png',
+			iconPath: 'icons/flight.svg',
+			// imagePath: 'images/porto-alegre.png',
+			imagePath: 'images/sant.svg',
 			promotion: '15% OFF com Clube Smiles',
 			flyDestiny: 'Santarém (STM)',
 			flyOrigin: 'Saindo de Brasília (BSB)',
@@ -93,8 +94,8 @@ const Lightbox: React.FC = () => {
 		},
 		{
 			id: 435979,
-			iconPath: '../../assets/icons/flight.svg',
-			imagePath: '../../assets/images/porto-alegre.png',
+			iconPath: 'icons/flight.svg',
+			imagePath: 'images/porto-alegre.png',
 			promotion: '15 OFF com Clube Smiles',
 			flyDestiny: 'Porto Alegre (POA)',
 			flyOrigin: 'Saindo de São Paulo (GRU)',
@@ -247,7 +248,17 @@ const Lightbox: React.FC = () => {
 	// }
 	// }
 
+	// const editPath = (path) => {
+	// 	path = this;
+	// 	return require(`../../assets/images/${path}`)
+	// }
 
+	// let iconPathFinal = editPath(cards[1].iconPath)
+	// console.log('Koca: iconPathFinal ', iconPathFinal);
+
+	// cards.map((card) => (
+
+	// ));
 
 	return (
 		<>
@@ -287,9 +298,9 @@ const Lightbox: React.FC = () => {
 						{cards.map((card) => (
 							<PromotionalCard
 								key={card.id}
-								cardIconPath={require('../../assets/icons/flight.svg')}
-								// cardIconPath={require(card.promotion)}
-								cardImagePath={require('../../assets/images/porto-alegre.png')}
+								// cardIconPath={require('../../assets/icons/flight.svg')}
+								cardIconPath={card.iconPath}
+								cardImagePath={card.imagePath}
 								cardPromotion={card.promotion}
 								cardOrigin={card.flyOrigin}
 								cardDestiny={card.flyDestiny}
