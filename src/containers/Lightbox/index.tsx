@@ -55,18 +55,23 @@ const Lightbox: React.FC = () => {
 	>(
 		'<style>.terms-text-lbx a{text-decoration: underline;}</style><span class="terms-text-lbx">Li e aceito o <a href="/clube-smiles/regulamento/" target=\'_blank\'>Regulamento do Clube Smiles</a></span>'
 	);
-	const [optOutCheckboxText, setOptOutCheckboxText] = useState<
-		string | undefined
-	>('Não exibir essa mensagem novamente');
-	const [confirmButtonType, setConfirmButtonType] = useState<
-		string | undefined
-	>('CALLBACK');
-	const [confirmButtonText, setConfirmButtonText] = useState<
-		string | undefined
-	>('Subir');
-	const [confirmButtonAction, setConfirmButtonAction] = useState<
-		string | undefined
-	>('/minhaconta/meusdados');
+	const [optOutCheckboxText, setOptOutCheckboxText] = useState<string>('Não exibir essa mensagem novamente');
+	const [confirmButtonCallback, setConfirmButtonCallback] = useState<boolean>(false);
+	const [confirmButtonText, setConfirmButtonText] = useState<string>(
+		'Subir'
+	);
+
+
+
+
+
+	const [confirmButtonAction, setConfirmButtonAction] = useState<string | undefined>(
+		"actionController.goToCheckout('2000','Monthly')"
+	);
+
+
+
+
 	const [buttonColor, setButtonColor] = useState('color-product-club');
 
 	const [cardPromotion, setCardPromotion] = useState(
@@ -79,12 +84,10 @@ const Lightbox: React.FC = () => {
 	const [cardIconPath, setCardIconPath] = useState(
 		'https://static.smiler.com.br/bs-theme/assets/logos/smiles/lg-smiles-white.svg'
 	);
-
 	const [cards, setCards] = useState([
 		{
 			id: 436969,
 			iconPath: 'icons/flight.svg',
-			// imagePath: 'images/porto-alegre.png',
 			imagePath: 'images/sant.svg',
 			promotion: '15% OFF com Clube Smiles',
 			flyDestiny: 'Santarém (STM)',
@@ -176,89 +179,135 @@ const Lightbox: React.FC = () => {
 		};
 	}, []);
 
+
+
+	const actionController = {
+
+		// goToCheckout: (milesQuantity: string, typePayment: string) => {
+		// 	let chosenPlanURL = '';
+		// 	let addToCheckoutURL = '';
+		// 	let namespaceCheckout = '';
+		// 	let stringParams = '';
+		// 	const div = parent.document.getElementById('???');
+		// 	div.style.display = 'block';
+		// 	div.style.zIndex = '2147483647';
+		// 	div.className += "in";
+		// 	parent.document.getElementById('newLightModal').style.display = 'none';
+
+
+		// 	let xhttp_clubChangePlan = new XMLHttpRequest();
+
+		// 	xhttp_clubChangePlan.onreadystatechange = ( ) => {
+
+		// 		if (
+		// 			xhttp_clubChangePlan.readyState === 4 &&
+		// 			xhttp_clubChangePlan.status === 200
+		// 		) {
+		// 			const parser = new DOMParser();
+
+		// 			const doc = parser.parseFromString(
+		// 				xhttp_clubChangePlan.responseText,
+		// 				'text/html'
+		// 			);
+
+		// 			chosenPlanURL = doc.getElementById(
+		// 				'chosenPlanAvailableURL'
+		// 			).value;
+
+		// 			addToCheckoutURL =
+		// 				doc.getElementById('addToCheckoutURL').value;
+
+		// 			namespaceCheckout = doc.getElementById('namespace').value;
+
+		// 			stringParams += `&${namespaceCheckout}milesQuantity=${milesQuantity}&${namespaceCheckout}typePayment=${typePayment}`;
+		// 			console.log(addToCheckoutURL + stringParams);
+
+		// 			xhttp_addToCheckout.open(
+		// 				'GET',
+		// 				addToCheckoutURL + stringParams,
+		// 				true
+		// 			);
+
+		// 			xhttp_addToCheckout.timeout = 45000;
+
+		// 			xhttp_addToCheckout.send();
+		// 		}
+
+		// 	}
+
+		// 	let xhttp_addToCheckout = new XMLHttpRequest();
+
+		// 	xhttp_addToCheckout.onreadystatechange = () => {
+		// 		if (
+		// 			xhttp_addToCheckout.readyState === 4 &&
+		// 			xhttp_addToCheckout.status == 200
+		// 		) {
+		// 			console.log(xhttp_addToCheckout.responseText);
+		// 		}
+		// 	};
+		// 	xhttp_addToCheckout.ontimeout = ( ) => {
+		// 		console.error("The request timed out.")
+		// 	};
+		// 	xhttp_addToCheckout.onload = () => {
+		// 		if (
+		// 			xhttp_addToCheckout.readyState === 4 &&
+		// 			xhttp_addToCheckout.status === 200
+		// 		) {
+		// 			console.log(xhttp_addToCheckout.responseText);
+		// 			try {
+		// 				const data = JSON.parse(
+		// 					xhttp_addToCheckout.responseText
+		// 				);
+		// 				if (data) {
+		// 					if (data.successOrderId) {
+		// 						window.open(
+		// 							`/group/guest/checkout/sucesso?orderId=${data.successOrderId}`,
+		// 							'_parent'
+		// 						);
+		// 					} else if (data.status) {
+		// 						window.open('/group/guest/checkout', '_parent');
+		// 					} else if (data.errorCode === '201') {
+		// 						console.log('Error redirecting to checkout');
+		// 						console.log(data);
+		// 					} else {
+		// 						console.log('Error redirecting to checkout');
+		// 						console.log(data);
+		// 					}
+		// 				}
+		// 			} catch (e) {
+		// 				console.error(e);
+		// 			}
+		// 		}
+		// 		parent.document.getElementById('???').style.display = 'none';
+		// 	};
+		// },
+		// redirectUser: ()=> {
+		// 	window.open(
+		// 		`${window.location.origin  }/group/guest/minha-conta/clube-smiles/mudar-de-plano`, '_parent'
+		// 	)
+		// }
+	};
+
+
+
+
+
+
+
 	if (optOutCookies === 'optedOut') {
 		return null;
 	}
 
-	// 	let actionController = {
-	// 		goToCheckout: function (milesQuantity, typePayment) {
-	// 			let chosenPlanURL = '';
-	// 			let addToCheckoutURL = '';
-	// 			let namespaceCheckout = '';
-	// 			let stringParams = '';
-	// 			let div = parent.document.getElementById('alertaModaloadingairplane');
-	// 			div.style.display = 'block';
-	// 			div.style.zIndex = 2147483647;
-	// 			div.className += \" in\";
-	// 			parent.document.getElementById('newLightModal').style.display = 'none';
-	// 			let xhttp_clubChangePlan = new XMLHttpRequest();
-	// 			xhttp_clubChangePlan.onreadystatechange = function () {
-	// 				if (this.readyState == 4 && this.status == 200) {
-	// 					let parser = new DOMParser();
-	// 					let doc = parser.parseFromString(xhttp_clubChangePlan.responseText, \"text/html\");
-	// 					chosenPlanURL = doc.getElementById('chosenPlanAvailableURL').value;
-	// 					addToCheckoutURL = doc.getElementById('addToCheckoutURL').value;
-	// 					namespaceCheckout = doc.getElementById('namespace').value;
-	// 					stringParams += '&' + namespaceCheckout + 'milesQuantity=' + milesQuantity + '&' + namespaceCheckout + 'typePayment=' + typePayment; console.log(addToCheckoutURL + stringParams);
-	// 					xhttp_addToCheckout.open(\"GET\", addToCheckoutURL + stringParams, true);
-	// 					xhttp_addToCheckout.timeout = 45000;
-	// 					xhttp_addToCheckout.send();
-	// 				}
+	const confirmButtonCallbackAction = () => {
 
-	// 			}
-	// 			let xhttp_addToCheckout = new XMLHttpRequest();
-	// 			xhttp_addToCheckout.onreadystatechange = function () {
-	// 				if (this.readyState == 4 && this.status == 200) {
-	// 					console.log(xhttp_addToCheckout.responseText)
-	// 				}
-	// 			}
-	// 			xhttp_addToCheckout.ontimeout = function () {
-	// 				console.error(\"The request timed out.\")
-	// 			};
-	// 			xhttp_addToCheckout.onload = function () {
-	// 						if (this.readyState == 4 && this.status == 200) {
-	// 							console.log(xhttp_addToCheckout.responseText)
-	// 							try {
-	// 								data = JSON.parse(xhttp_addToCheckout.responseText);
-	// 							} catch (e) {
-	// 								console.error(e);
-	// 							}
-	// 							if (data.successOrderId) {
-	// 								window.open('/group/guest/checkout/sucesso?orderId=' + data.successOrderId, '_parent');
-	// 							}
-	// 							else if (data.status) {
-	// 								window.open('/group/guest/checkout', '_parent');
-	// 							} else {
-	// 								if (data.errorCode === \"201\") {
-	// 								console.log(\"Error redirecting to checkout\");console.log(data);
-	// 							}
-	// 							else {
-	// 								console.log(\"Error redirecting to checkout\");
-	// 								console.log(data);
-	// 				}
-	// 				parent.document.getElementById('alertaModaloadingairplane').style.display = 'none';
-	// 			}
-	// 		}
-	// 	};
-	// 	xhttp_clubChangePlan.open(\"GET\", window.location.origin + '/clube-smiles/clientes', true);
-	// 	xhttp_clubChangePlan.send();
+		console.log('callback' );
+	}
 
-	// }, redirectUser: function () {
-	// 		window.open(window.location.origin + '/group/guest/minha-conta/clube-smiles/mudar-de-plano', '_parent');
-	// }
-	// }
+	const confirmButtonRedirectAction = () => {
+		console.log('redirect');
+	};
 
-	// const editPath = (path) => {
-	// 	path = this;
-	// 	return require(`../../assets/images/${path}`)
-	// }
 
-	// let iconPathFinal = editPath(cards[1].iconPath)
-	// console.log('Koca: iconPathFinal ', iconPathFinal);
-
-	// cards.map((card) => (
-
-	// ));
 
 	return (
 		<>
@@ -285,20 +334,9 @@ const Lightbox: React.FC = () => {
 
 				{hasPromotionalCards ? (
 					<div className='modal-cards'>
-						{/* <PromotionalCard
-							cardImagePath='https://www.smiles.com.br/documents/20124/59884/login_opt1.jpg/ed8d40b5-cdb9-6afa-d6e8-4ddda77495de?t=1609444388733'
-							cardIconPath={cardIconPath}
-							cardPromotion={cardPromotion}
-							cardOrigin={cardOrigin}
-							cardDestiny={cardDestiny}
-							cardText={cardText}
-							cardPrice={cardPrice}
-						/> */}
-
 						{cards.map((card) => (
 							<PromotionalCard
 								key={card.id}
-								// cardIconPath={require('../../assets/icons/flight.svg')}
 								cardIconPath={card.iconPath}
 								cardImagePath={card.imagePath}
 								cardPromotion={card.promotion}
@@ -334,7 +372,11 @@ const Lightbox: React.FC = () => {
 						color='primary'
 						id='btn_confirmPassword'
 						text={confirmButtonText}
-						onClick={() => console.log('Koca: ')}
+						onClick={
+							confirmButtonCallback
+								? confirmButtonCallbackAction
+								: confirmButtonRedirectAction
+						}
 						disabled={!confirmButtonActive}
 					/>
 				</div>
