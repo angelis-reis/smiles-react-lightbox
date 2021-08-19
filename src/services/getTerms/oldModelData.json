@@ -1,0 +1,13 @@
+{
+	"cancelButtonText": "Não desejo receber mais milhas",
+	"color": "club-inverse",
+	"confirmButtonAction": "actionController.goToCheckout('2000','Monthly')",
+	"confirmButtonText": "Subir",
+	"confirmButtonType": "CALLBACK",
+
+
+	"htmlContentName": "
+	<script>
+	var actionController = {goToCheckout: function (milesQuantity, typePayment) {var chosenPlanURL = '';var addToCheckoutURL = '';var namespaceCheckout = '';var stringParams = '';var div = parent.document.getElementById('alertaModaloadingairplane');div.style.display = 'block';div.style.zIndex = 2147483647;div.className += \" in\";parent.document.getElementById('newLightModal').style.display = 'none';var xhttp_clubChangePlan = new XMLHttpRequest();xhttp_clubChangePlan.onreadystatechange = function () { if (this.readyState == 4 && this.status == 200) {var parser = new DOMParser();  var doc = parser.parseFromString(xhttp_clubChangePlan.responseText, \"text/html\");chosenPlanURL = doc.getElementById('chosenPlanAvailableURL').value;  addToCheckoutURL = doc.getElementById('addToCheckoutURL').value;  namespaceCheckout = doc.getElementById('namespace').value;stringParams += '&' + namespaceCheckout + 'milesQuantity=' + milesQuantity + '&' + namespaceCheckout + 'typePayment=' + typePayment;console.log(addToCheckoutURL + stringParams);xhttp_addToCheckout.open(\"GET\", addToCheckoutURL + stringParams, true);  xhttp_addToCheckout.timeout = 45000;  xhttp_addToCheckout.send();}}var xhttp_addToCheckout = new XMLHttpRequest();xhttp_addToCheckout.onreadystatechange = function () { if (this.readyState == 4 && this.status == 200) {  console.log(xhttp_addToCheckout.responseText) }}xhttp_addToCheckout.ontimeout = function () { console.error(\"The request timed out.\");};xhttp_addToCheckout.onload = function () { if (this.readyState == 4 && this.status == 200) {console.log(xhttp_addToCheckout.responseText)try { data = JSON.parse(xhttp_addToCheckout.responseText);  } catch (e) { console.error(e); }if (data.successOrderId) { window.open('/group/guest/checkout/sucesso?orderId=' + data.successOrderId, '_parent');} else if (data.status) { window.open('/group/guest/checkout', '_parent');} else { if (data.errorCode === \"201\") {console.log(\"Error redirecting to checkout\");console.log(data); } else {console.log(\"Error redirecting to checkout\");console.log(data); } parent.document.getElementById('alertaModaloadingairplane').style.display = 'none';  } }};xhttp_clubChangePlan.open(\"GET\", window.location.origin + '/clube-smiles/clientes', true);xhttp_clubChangePlan.send();},redirectUser: function () {window.open(window.location.origin + '/group/guest/minha-conta/clube-smiles/mudar-de-plano', '_parent');}}strong</script>",
+
+}
