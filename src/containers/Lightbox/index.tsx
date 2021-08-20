@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Redirect } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 import {
 	SmlsModal,
@@ -20,7 +20,7 @@ const Lightbox: React.FC = () => {
 	const [hasLogo, setHasLogo] = useState<boolean>(true);
 	const [hasLightboxContent, setHasLightboxContent] = useState<boolean>(true);
 	const [hasPromotionalCards, setHasPromotionalCards] =
-		useState<boolean>(true);
+		useState<boolean>(false);
 	const [hasRulesCheckbox, setHasRulesCheckbox] = useState<boolean>(true);
 	const [hasHelpButton, setHasHelpButton] = useState<boolean>(true);
 	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>(true);
@@ -40,6 +40,7 @@ const Lightbox: React.FC = () => {
 	const [lightboxContent, setLightboxContent] = useState<string | undefined>(
 		'<style>#modal-content p {font-family:Nunito,Arial,sans-serif;color:#666666;font-size:16px;line-height:24px;}</style><div id="modal-content"><p>Ganhe ainda mais milhas ao transferir os pontos do seu cartão de crédito pra Smiles e aproveite um mundo de oportunidades!</p></div>'
 	);
+
 	const [helpButtonType, setHelpButtonType] = useState<string | undefined>(
 		'REDIRECT'
 	);
@@ -55,22 +56,18 @@ const Lightbox: React.FC = () => {
 	>(
 		'<style>.terms-text-lbx a{text-decoration: underline;}</style><span class="terms-text-lbx">Li e aceito o <a href="/clube-smiles/regulamento/" target=\'_blank\'>Regulamento do Clube Smiles</a></span>'
 	);
-	const [optOutCheckboxText, setOptOutCheckboxText] = useState<string>('Não exibir essa mensagem novamente');
-	const [confirmButtonCallback, setConfirmButtonCallback] = useState<boolean>(false);
-	const [confirmButtonText, setConfirmButtonText] = useState<string>(
-		'Subir'
+	const [optOutCheckboxText, setOptOutCheckboxText] = useState<string>(
+		'Não exibir essa mensagem novamente'
 	);
 
+	const [confirmButtonType, setConfirmButtonType] =
+		useState<string>('CALLBACK');
 
+	const [confirmButtonText, setConfirmButtonText] = useState<string>('Subir');
 
-
-
-	const [confirmButtonAction, setConfirmButtonAction] = useState<string | undefined>(
-		"actionController.goToCheckout('2000','Monthly')"
-	);
-
-
-
+	const [confirmButtonAction, setConfirmButtonAction] = useState<
+		string | undefined
+	>("actionController.goToCheckout('2000','Monthly')");
 
 	const [buttonColor, setButtonColor] = useState('color-product-club');
 
@@ -179,135 +176,145 @@ const Lightbox: React.FC = () => {
 		};
 	}, []);
 
-
-
 	const actionController = {
+		goToCheckout: (milesQuantity: string, typePayment: string) => {
+			let chosenPlanURL = '';
+			let addToCheckoutURL = '';
+			let namespaceCheckout = '';
+			let stringParams = '';
 
-		// goToCheckout: (milesQuantity: string, typePayment: string) => {
-		// 	let chosenPlanURL = '';
-		// 	let addToCheckoutURL = '';
-		// 	let namespaceCheckout = '';
-		// 	let stringParams = '';
-		// 	const div = parent.document.getElementById('???');
-		// 	div.style.display = 'block';
-		// 	div.style.zIndex = '2147483647';
-		// 	div.className += "in";
-		// 	parent.document.getElementById('newLightModal').style.display = 'none';
+			const div = parent.document.getElementById(
+				'alertaModaloadingairplane'
+			);
+			div.style.display = 'block';
+			div.style.zIndex = '2147483647';
+			div.className += 'in';
+			parent.document.getElementById('newLightModal').style.display =
+				'none';
 
+			const xhttpCubChangePlan = new XMLHttpRequest();
 
-		// 	let xhttp_clubChangePlan = new XMLHttpRequest();
+			xhttpCubChangePlan.onreadystatechange = () => {
+				if (
+					xhttpCubChangePlan.readyState === 4 &&
+					xhttpCubChangePlan.status === 200
+				) {
+					const parser = new DOMParser();
 
-		// 	xhttp_clubChangePlan.onreadystatechange = ( ) => {
+					const doc = parser.parseFromString(
+						xhttpCubChangePlan.responseText,
+						'text/html'
+					);
 
-		// 		if (
-		// 			xhttp_clubChangePlan.readyState === 4 &&
-		// 			xhttp_clubChangePlan.status === 200
-		// 		) {
-		// 			const parser = new DOMParser();
+                    chosenPlanURL = (
+						doc.getElementById('chosenPlanAvailableURL') as HTMLInputElement
+					).value;
 
-		// 			const doc = parser.parseFromString(
-		// 				xhttp_clubChangePlan.responseText,
-		// 				'text/html'
-		// 			);
+                    addToCheckoutURL = (
+						doc.getElementById('addToCheckoutURL') as HTMLInputElement
+					).value;
 
-		// 			chosenPlanURL = doc.getElementById(
-		// 				'chosenPlanAvailableURL'
-		// 			).value;
+					namespaceCheckout = (
+						doc.getElementById('namespace') as HTMLInputElement
+					).value;
 
-		// 			addToCheckoutURL =
-		// 				doc.getElementById('addToCheckoutURL').value;
+					stringParams += `&${namespaceCheckout}milesQuantity=${milesQuantity}&${namespaceCheckout}typePayment=${typePayment}`;
+					console.log(addToCheckoutURL + stringParams);
 
-		// 			namespaceCheckout = doc.getElementById('namespace').value;
+					xhttpAddToCheckout.open(
+						'GET',
+						addToCheckoutURL + stringParams,
+						true
+					);
+					xhttpAddToCheckout.timeout = 45000;
+					xhttpAddToCheckout.send();
+				}
+			};
 
-		// 			stringParams += `&${namespaceCheckout}milesQuantity=${milesQuantity}&${namespaceCheckout}typePayment=${typePayment}`;
-		// 			console.log(addToCheckoutURL + stringParams);
+			let xhttpAddToCheckout = new XMLHttpRequest();
 
-		// 			xhttp_addToCheckout.open(
-		// 				'GET',
-		// 				addToCheckoutURL + stringParams,
-		// 				true
-		// 			);
+			xhttpAddToCheckout.onreadystatechange = () => {
+				if (
+					xhttpAddToCheckout.readyState === 4 &&
+					xhttpAddToCheckout.status == 200
+				) {
+					console.log(xhttpAddToCheckout.responseText);
+				}
+			};
+			xhttpAddToCheckout.ontimeout = () => {
+				console.error('The request timed out.');
+			};
+			xhttpAddToCheckout.onload = () => {
+				if (
+					xhttpAddToCheckout.readyState === 4 &&
+					xhttpAddToCheckout.status === 200
+				) {
+					console.log(xhttpAddToCheckout.responseText);
+					try {
+						const data = JSON.parse(
+							xhttpAddToCheckout.responseText
+						);
+						if (data.successOrderId) {
+							window.open(
+								`/group/guest/checkout/sucesso?orderId=${data.successOrderId}`,
+								'_parent'
+							);
+						} else if (data.status) {
+							window.open('/group/guest/checkout', '_parent');
+						} else if (data.errorCode === '201') {
+							console.log('Error redirecting to checkout');
+							console.log(data);
+						} else {
+							console.log('Error redirecting to checkout');
+							console.log(data);
+						}
+					} catch (e) {
+						console.error(e);
+					}
+				}
+			};
+			parent.document.getElementById(
+				'alertaModaloadingairplane'
+			).style.display = 'none';
+			xhttpCubChangePlan.open(
+				'GET',
+				`${window.location.origin}/clube-smiles/clientes`,
+				true
+			);
+			xhttpCubChangePlan.send();
+		},
 
-		// 			xhttp_addToCheckout.timeout = 45000;
-
-		// 			xhttp_addToCheckout.send();
-		// 		}
-
-		// 	}
-
-		// 	let xhttp_addToCheckout = new XMLHttpRequest();
-
-		// 	xhttp_addToCheckout.onreadystatechange = () => {
-		// 		if (
-		// 			xhttp_addToCheckout.readyState === 4 &&
-		// 			xhttp_addToCheckout.status == 200
-		// 		) {
-		// 			console.log(xhttp_addToCheckout.responseText);
-		// 		}
-		// 	};
-		// 	xhttp_addToCheckout.ontimeout = ( ) => {
-		// 		console.error("The request timed out.")
-		// 	};
-		// 	xhttp_addToCheckout.onload = () => {
-		// 		if (
-		// 			xhttp_addToCheckout.readyState === 4 &&
-		// 			xhttp_addToCheckout.status === 200
-		// 		) {
-		// 			console.log(xhttp_addToCheckout.responseText);
-		// 			try {
-		// 				const data = JSON.parse(
-		// 					xhttp_addToCheckout.responseText
-		// 				);
-		// 				if (data) {
-		// 					if (data.successOrderId) {
-		// 						window.open(
-		// 							`/group/guest/checkout/sucesso?orderId=${data.successOrderId}`,
-		// 							'_parent'
-		// 						);
-		// 					} else if (data.status) {
-		// 						window.open('/group/guest/checkout', '_parent');
-		// 					} else if (data.errorCode === '201') {
-		// 						console.log('Error redirecting to checkout');
-		// 						console.log(data);
-		// 					} else {
-		// 						console.log('Error redirecting to checkout');
-		// 						console.log(data);
-		// 					}
-		// 				}
-		// 			} catch (e) {
-		// 				console.error(e);
-		// 			}
-		// 		}
-		// 		parent.document.getElementById('???').style.display = 'none';
-		// 	};
-		// },
-		// redirectUser: ()=> {
-		// 	window.open(
-		// 		`${window.location.origin  }/group/guest/minha-conta/clube-smiles/mudar-de-plano`, '_parent'
-		// 	)
-		// }
+		redirectUser: () => {
+			window.open(
+				`${window.location.origin}/group/guest/minha-conta/clube-smiles/mudar-de-plano`,
+				'_parent'
+			);
+		}
 	};
-
-
-
-
-
-
 
 	if (optOutCookies === 'optedOut') {
 		return null;
 	}
 
-	const confirmButtonCallbackAction = () => {
+	const confirmButtonActionType = () => {
+		if (confirmButtonType === 'REDIRECT') {
+			console.log('redirect');
+			<Link to={helpButtonAction} />;
+		} else if (confirmButtonType === 'CALLBACK') {
+			console.log('callback');
 
-		console.log('callback' );
-	}
+			const confirmButtonActionFunction = eval(
+				`(${confirmButtonAction})`
+			);
 
-	const confirmButtonRedirectAction = () => {
-		console.log('redirect');
+			confirmButtonActionFunction();
+		}
 	};
 
-
+	const helpButtonRedirectAction = () => {
+		console.log('redirect');
+		<Link to={confirmButtonAction} />;
+	};
 
 	return (
 		<>
@@ -372,19 +379,19 @@ const Lightbox: React.FC = () => {
 						color='primary'
 						id='btn_confirmPassword'
 						text={confirmButtonText}
-						onClick={
-							confirmButtonCallback
-								? confirmButtonCallbackAction
-								: confirmButtonRedirectAction
-						}
 						disabled={!confirmButtonActive}
+						onClick={confirmButtonActionType}
 					/>
 				</div>
 
 				{hasHelpButton ? (
-					<a className='modal-help-button' href={helpButtonAction}>
-						{helpButtonText}
-					</a>
+					<SmlsButton
+						className='modal-help-button'
+						color='hyperlink'
+						id='btn_help'
+						text={helpButtonText}
+						onClick={helpButtonRedirectAction}
+					/>
 				) : null}
 
 				{hasOptOutCheckbox ? (
