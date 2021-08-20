@@ -17,13 +17,14 @@ const Lightbox: React.FC = () => {
 		localStorage.getItem('cookies')
 	);
 
-	const [hasLogo, setHasLogo] = useState<boolean>(true);
-	const [hasLightboxContent, setHasLightboxContent] = useState<boolean>(true);
-	const [hasPromotionalCards, setHasPromotionalCards] =
+	const [hasLogo, setHasLogo] = useState<boolean>(false);
+	const [hasLightboxContent, setHasLightboxContent] =
 		useState<boolean>(false);
-	const [hasRulesCheckbox, setHasRulesCheckbox] = useState<boolean>(true);
-	const [hasHelpButton, setHasHelpButton] = useState<boolean>(true);
-	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>(true);
+	const [hasPromotionalCards, setHasPromotionalCards] =
+		useState<boolean>(true);
+	const [hasRulesCheckbox, setHasRulesCheckbox] = useState<boolean>(false);
+	const [hasHelpButton, setHasHelpButton] = useState<boolean>(false);
+	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>(false);
 	const [rulesCheckboxIsChecked, setRulesCheckboxIsChecked] =
 		useState<boolean>(false);
 	const [optOutCheckboxIsChecked, setOptOutCheckboxIsChecked] =
@@ -82,6 +83,16 @@ const Lightbox: React.FC = () => {
 		'https://static.smiler.com.br/bs-theme/assets/logos/smiles/lg-smiles-white.svg'
 	);
 	const [cards, setCards] = useState([
+		{
+			id: 436969,
+			iconPath: 'icons/flight.svg',
+			imagePath: 'images/sant.svg',
+			promotion: '15% OFF com Clube Smiles',
+			flyDestiny: 'Santarém (STM)',
+			flyOrigin: 'Saindo de Brasília (BSB)',
+			text: 'A partir de',
+			flyPrice: '6.400 milhas/trecho'
+		},
 		{
 			id: 436969,
 			iconPath: 'icons/flight.svg',
@@ -178,10 +189,10 @@ const Lightbox: React.FC = () => {
 
 	const actionController = {
 		goToCheckout: (milesQuantity: string, typePayment: string) => {
-			let chosenPlanURL = '';
-			let addToCheckoutURL = '';
-			let namespaceCheckout = '';
-			let stringParams = '';
+			let chosenPlanURL: string = '';
+			let addToCheckoutURL: string = '';
+			let namespaceCheckout: string = '';
+			let stringParams: string = '';
 
 			const div = parent.document.getElementById(
 				'alertaModaloadingairplane'
@@ -206,12 +217,16 @@ const Lightbox: React.FC = () => {
 						'text/html'
 					);
 
-                    chosenPlanURL = (
-						doc.getElementById('chosenPlanAvailableURL') as HTMLInputElement
+					chosenPlanURL = (
+						doc.getElementById(
+							'chosenPlanAvailableURL'
+						) as HTMLInputElement
 					).value;
 
-                    addToCheckoutURL = (
-						doc.getElementById('addToCheckoutURL') as HTMLInputElement
+					addToCheckoutURL = (
+						doc.getElementById(
+							'addToCheckoutURL'
+						) as HTMLInputElement
 					).value;
 
 					namespaceCheckout = (
@@ -296,24 +311,22 @@ const Lightbox: React.FC = () => {
 		return null;
 	}
 
-	const confirmButtonActionType = () => {
+	const confirmButtonActionType = (): void => {
 		if (confirmButtonType === 'REDIRECT') {
 			console.log('redirect');
 			<Link to={helpButtonAction} />;
 		} else if (confirmButtonType === 'CALLBACK') {
 			console.log('callback');
-
 			const confirmButtonActionFunction = eval(
 				`(${confirmButtonAction})`
 			);
-
 			confirmButtonActionFunction();
 		}
 	};
 
-	const helpButtonRedirectAction = () => {
+	const helpButtonRedirectAction = (): void => {
 		console.log('redirect');
-		<Link to={confirmButtonAction} />;
+		<Link to={helpButtonAction} />;
 	};
 
 	return (
