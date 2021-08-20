@@ -13,48 +13,46 @@ import Logo from '../../assets/images/logo.png';
 
 const Lightbox: React.FC = () => {
 	const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(true);
-	const [optOutCookies, setOptOutCookies] = useState(
+	const [optOutCookies, setOptOutCookies] = useState<string>(
 		localStorage.getItem('cookies')
 	);
 
 	const [hasLogo, setHasLogo] = useState<boolean>(false);
-	const [hasLightboxContent, setHasLightboxContent] =
-		useState<boolean>(false);
+	const [hasLightboxContent, setHasLightboxContent] = useState<boolean>(true);
 	const [hasPromotionalCards, setHasPromotionalCards] =
-		useState<boolean>(true);
+		useState<boolean>(false);
 	const [hasRulesCheckbox, setHasRulesCheckbox] = useState<boolean>(false);
 	const [hasHelpButton, setHasHelpButton] = useState<boolean>(false);
 	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>(false);
+
+
 	const [rulesCheckboxIsChecked, setRulesCheckboxIsChecked] =
 		useState<boolean>(false);
 	const [optOutCheckboxIsChecked, setOptOutCheckboxIsChecked] =
 		useState<boolean>(false);
 	const [modalWidthClass, setModalWidthClass] = useState<string>('');
 	const [confirmButtonColor, setConfirmButtonColor] = useState<string>('');
-	const [confirmButtonActive, setConfirmButtonActive] = useState(true);
+	const [confirmButtonActive, setConfirmButtonActive] =
+		useState<boolean>(true);
 
 	// states to render
 
-	const [lightboxTitle, setLightboxTitle] = useState<string | undefined>(
-		`Que tal ganhar o dobro de milhas a cada 3 meses e aproveitar ainda mais benefícios exclusivos? 💜`
+	const [lightboxTitle, setLightboxTitle] = useState<string>(
+		`Conheça o Meu Bônus Vip, novo benefício do Clube Smiles 💜`
 	);
-	const [lightboxContent, setLightboxContent] = useState<string | undefined>(
+	const [lightboxContent, setLightboxContent] = useState<string>(
 		'<style>#modal-content p {font-family:Nunito,Arial,sans-serif;color:#666666;font-size:16px;line-height:24px;}</style><div id="modal-content"><p>Ganhe ainda mais milhas ao transferir os pontos do seu cartão de crédito pra Smiles e aproveite um mundo de oportunidades!</p></div>'
 	);
 
-	const [helpButtonType, setHelpButtonType] = useState<string | undefined>(
-		'REDIRECT'
-	);
-	const [helpButtonText, setHelpButtonText] = useState<string | undefined>(
+	const [helpButtonType, setHelpButtonType] = useState<string>('REDIRECT');
+	const [helpButtonText, setHelpButtonText] = useState<string>(
 		'Conhecer outros planos do Clube'
 	);
-	const [helpButtonAction, setHelpButtonAction] = useState<
-		string | undefined
-	>('/club/smiles/client');
+	const [helpButtonAction, setHelpButtonAction] = useState<string>(
+		'/club/smiles/client'
+	);
 
-	const [confirmCheckboxText, setConfirmCheckboxText] = useState<
-		string | undefined
-	>(
+	const [confirmCheckboxText, setConfirmCheckboxText] = useState<string>(
 		'<style>.terms-text-lbx a{text-decoration: underline;}</style><span class="terms-text-lbx">Li e aceito o <a href="/clube-smiles/regulamento/" target=\'_blank\'>Regulamento do Clube Smiles</a></span>'
 	);
 	const [optOutCheckboxText, setOptOutCheckboxText] = useState<string>(
@@ -64,24 +62,17 @@ const Lightbox: React.FC = () => {
 	const [confirmButtonType, setConfirmButtonType] =
 		useState<string>('CALLBACK');
 
-	const [confirmButtonText, setConfirmButtonText] = useState<string>('Subir');
+	const [confirmButtonText, setConfirmButtonText] =
+		useState<string>('Acessar benefício');
 
-	const [confirmButtonAction, setConfirmButtonAction] = useState<
-		string | undefined
-	>("actionController.goToCheckout('2000','Monthly')");
-
-	const [buttonColor, setButtonColor] = useState('color-product-club');
-
-	const [cardPromotion, setCardPromotion] = useState(
-		'15% OFF com Clube Smiles'
+	const [confirmButtonAction, setConfirmButtonAction] = useState<string>(
+		"actionController.goToCheckout('2000','Monthly')"
 	);
-	const [cardOrigin, setCardOrigin] = useState('Santarém (STM)');
-	const [cardDestiny, setCardDestiny] = useState('Saindo de Brasília (BSB)');
-	const [cardText, setCardText] = useState('A partir de');
-	const [cardPrice, setCardPrice] = useState('6.400 milhas/trecho');
-	const [cardIconPath, setCardIconPath] = useState(
-		'https://static.smiler.com.br/bs-theme/assets/logos/smiles/lg-smiles-white.svg'
+
+	const [buttonColor, setButtonColor] = useState<string>(
+		'color-product-club?'
 	);
+
 	const [cards, setCards] = useState([
 		{
 			id: 436969,
@@ -102,16 +93,6 @@ const Lightbox: React.FC = () => {
 			flyOrigin: 'Saindo de Brasília (BSB)',
 			text: 'A partir de',
 			flyPrice: '6.400 milhas/trecho'
-		},
-		{
-			id: 435979,
-			iconPath: 'icons/flight.svg',
-			imagePath: 'images/porto-alegre.png',
-			promotion: '15 OFF com Clube Smiles',
-			flyDestiny: 'Porto Alegre (POA)',
-			flyOrigin: 'Saindo de São Paulo (GRU)',
-			text: 'A partir de',
-			flyPrice: '9.700 milhas/trecho'
 		}
 	]);
 
