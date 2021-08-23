@@ -175,71 +175,45 @@ const Lightbox: React.FC = () => {
 		}
 	};
 
-	useEffect(() => {
-		getData();
-		modalWidth();
-
-		if (hasConfirmCheckbox) {
-			setConfirmButtonActive(false);
-		}
-
-		const showModal = setTimeout(() => {
-			setIsOpenlightbox(true);
-		}, 800);
-		return () => {
-			clearTimeout(showModal);
-		};
-	}, []);
-
 	const actionController = {
 		goToCheckout: (milesQuantity: string, typePayment: string) => {
 			let chosenPlanURL: string = '';
 			let addToCheckoutURL: string = '';
 			let namespaceCheckout: string = '';
 			let stringParams: string = '';
-
-			const div = parent.document.getElementById(
-				'alertaModaloadingairplane'
-			);
-			div.style.display = 'block';
-			div.style.zIndex = '2147483647';
-			div.className += 'in';
-			parent.document.getElementById('newLightModal').style.display =
-				'none';
-
+			// const div = parent.document.getElementById(
+			// 	'alertaModaloadingairplane'
+			// );
+			// div.style.display = 'block';
+			// div.style.zIndex = '2147483647';
+			// div.className += 'in';
+			// parent.document.getElementById('newLightModal').style.display = 'none';
 			const xhttpCubChangePlan = new XMLHttpRequest();
-
 			xhttpCubChangePlan.onreadystatechange = () => {
 				if (
 					xhttpCubChangePlan.readyState === 4 &&
 					xhttpCubChangePlan.status === 200
 				) {
 					const parser = new DOMParser();
-
 					const doc = parser.parseFromString(
 						xhttpCubChangePlan.responseText,
 						'text/html'
 					);
-
 					chosenPlanURL = (
 						doc.getElementById(
 							'chosenPlanAvailableURL'
 						) as HTMLInputElement
 					).value;
-
 					addToCheckoutURL = (
 						doc.getElementById(
 							'addToCheckoutURL'
 						) as HTMLInputElement
 					).value;
-
 					namespaceCheckout = (
 						doc.getElementById('namespace') as HTMLInputElement
 					).value;
-
 					stringParams += `&${namespaceCheckout}milesQuantity=${milesQuantity}&${namespaceCheckout}typePayment=${typePayment}`;
 					console.log(addToCheckoutURL + stringParams);
-
 					xhttpAddToCheckout.open(
 						'GET',
 						addToCheckoutURL + stringParams,
@@ -249,9 +223,7 @@ const Lightbox: React.FC = () => {
 					xhttpAddToCheckout.send();
 				}
 			};
-
 			let xhttpAddToCheckout = new XMLHttpRequest();
-
 			xhttpAddToCheckout.onreadystatechange = () => {
 				if (
 					xhttpAddToCheckout.readyState === 4 &&
@@ -292,9 +264,9 @@ const Lightbox: React.FC = () => {
 					}
 				}
 			};
-			parent.document.getElementById(
-				'alertaModaloadingairplane'
-			).style.display = 'none';
+			// parent.document.getElementById(
+			// 	'alertaModaloadingairplane'
+			// ).style.display = 'none';
 			xhttpCubChangePlan.open(
 				'GET',
 				`${window.location.origin}/clube-smiles/clientes`,
@@ -324,6 +296,8 @@ const Lightbox: React.FC = () => {
 			const confirmButtonActionFunction = eval(
 				`(${confirmButtonAction})`
 			);
+			setIsOpenlightbox(false);
+
 			confirmButtonActionFunction();
 		}
 	};
@@ -332,6 +306,22 @@ const Lightbox: React.FC = () => {
 		console.log('redirect');
 		window.location.href = helpButtonAction;
 	};
+
+	useEffect(() => {
+		getData();
+		modalWidth();
+
+		if (hasConfirmCheckbox) {
+			setConfirmButtonActive(false);
+		}
+
+		const showModal = setTimeout(() => {
+			setIsOpenlightbox(true);
+		}, 800);
+		return () => {
+			clearTimeout(showModal);
+		};
+	}, []);
 
 	return (
 		<>

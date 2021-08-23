@@ -8,7 +8,7 @@ const Data: Object = {
 	buttonColor: 'color-product-club',
 	confirmButtonAction: "actionController.goToCheckout('2000','Monthly')",
 	confirmButtonText: 'Subir',
-	confirmButtonType: 'CALLBACK',
+	confirmButtonType: 'REDIRECT',
 	helpButtonAction: '/clube-smiles/clientes',
 	helpButtonText: 'Conhecer outros planos do Clube',
 	helpButtonType: 'REDIRECT',
