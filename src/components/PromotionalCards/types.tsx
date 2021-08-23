@@ -3,11 +3,15 @@ export interface IPromotionalCard {
 	/**
 	 * PromotionalCard color
 	 */
-	cardImagePath?: any;
+	redirectPath?: string;
 	/**
 	 * PromotionalCard color
 	 */
-	cardIconPath?: any;
+	cardImagePath?: string;
+	/**
+	 * PromotionalCard color
+	 */
+	cardIconPath?: string;
 	/**
 	 * PromotionalCard color
 	 */

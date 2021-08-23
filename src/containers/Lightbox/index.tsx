@@ -16,13 +16,12 @@ const Lightbox: React.FC = () => {
 		localStorage.getItem('cookies')
 	);
 
-	const [hasLogo, setHasLogo] = useState<boolean>(false);
-	const [hasHtmlContentName, setHasHtmlContentName] = useState<boolean>(true);
-	const [hasPromotionalCards, setHasPromotionalCards] =
-		useState<boolean>(true);
-	const [hasConfirmCheckbox, setHasConfirmCheckbox] = useState<boolean>(true);
-	const [hasHelpButton, setHasHelpButton] = useState<boolean>(true);
-	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>(true);
+	const [hasLogo, setHasLogo] = useState<boolean>();
+	const [hasHtmlContentName, setHasHtmlContentName] = useState<boolean>();
+	const [hasPromotionalCards, setHasPromotionalCards] = useState<boolean>();
+	const [hasConfirmCheckbox, setHasConfirmCheckbox] = useState<boolean>();
+	const [hasHelpButton, setHasHelpButton] = useState<boolean>();
+	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>();
 
 	const [confirmCheckboxIsChecked, setConfirmCheckboxIsChecked] =
 		useState<boolean>(false);
@@ -83,7 +82,6 @@ const Lightbox: React.FC = () => {
 		if (data) {
 			if (data.hasLogo === 'Y') {
 				setHasLogo(true);
-
 				if (data.logoPath) {
 					const logoPathFinal =
 						require(`../../assets/${data.logoPath}`).default;
@@ -98,12 +96,13 @@ const Lightbox: React.FC = () => {
 			}
 			if (data.hasPromotionalCards === 'Y') {
 				setHasPromotionalCards(true);
+				setModalWidthClass('width-664');
 			}
-
 			if (data.titleContentName) {
 				setTitleContentName(data.titleContentName);
 			}
 			if (data.htmlContentName) {
+				setHasHtmlContentName(true);
 				setHtmlContentName(data.htmlContentName);
 			}
 
@@ -150,14 +149,6 @@ const Lightbox: React.FC = () => {
 			if (data.searchId) {
 				setSearchId(data.searchId);
 			}
-		}
-	};
-
-	const modalWidth = () => {
-		if (hasPromotionalCards) {
-			setModalWidthClass('width-664');
-		} else {
-			setModalWidthClass('width-472');
 		}
 	};
 
@@ -309,7 +300,6 @@ const Lightbox: React.FC = () => {
 
 	useEffect(() => {
 		getData();
-		modalWidth();
 
 		if (hasConfirmCheckbox) {
 			setConfirmButtonActive(false);
@@ -351,6 +341,7 @@ const Lightbox: React.FC = () => {
 						{cards.map((card) => (
 							<PromotionalCard
 								key={card.id}
+								redirectPath={card.redirectPath}
 								cardIconPath={card.iconPath}
 								cardImagePath={card.imagePath}
 								cardPromotion={card.promotion}
