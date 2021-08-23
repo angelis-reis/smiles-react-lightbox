@@ -6,10 +6,9 @@ import {
 	SmlsCheckbox,
 	SmlsButton
 } from '@smiles/smiles-ui-kit-react';
-import { asyncGetTerms } from '../../services/getTerms/index';
+// import { asyncGetTerms } from '../../services/getTerms/index';
+import Data from '../../services/getTerms/newModelData';
 import { PromotionalCard } from '../../components/PromotionalCards/index';
-
-import Logo from '../../assets/images/logo.png';
 
 const Lightbox: React.FC = () => {
 	const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(true);
@@ -17,16 +16,15 @@ const Lightbox: React.FC = () => {
 		localStorage.getItem('cookies')
 	);
 
-	const [hasLogo, setHasLogo] = useState<boolean>(true);
-	const [hasLightboxContent, setHasLightboxContent] =
-		useState<boolean>(false);
+	const [hasLogo, setHasLogo] = useState<boolean>(false);
+	const [hasHtmlContentName, setHasHtmlContentName] = useState<boolean>(true);
 	const [hasPromotionalCards, setHasPromotionalCards] =
 		useState<boolean>(true);
-	const [hasRulesCheckbox, setHasRulesCheckbox] = useState<boolean>(false);
-	const [hasHelpButton, setHasHelpButton] = useState<boolean>(false);
-	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>(false);
+	const [hasConfirmCheckbox, setHasConfirmCheckbox] = useState<boolean>(true);
+	const [hasHelpButton, setHasHelpButton] = useState<boolean>(true);
+	const [hasOptOutCheckbox, setHasOptOutCheckbox] = useState<boolean>(true);
 
-	const [rulesCheckboxIsChecked, setRulesCheckboxIsChecked] =
+	const [confirmCheckboxIsChecked, setConfirmCheckboxIsChecked] =
 		useState<boolean>(false);
 	const [optOutCheckboxIsChecked, setOptOutCheckboxIsChecked] =
 		useState<boolean>(false);
@@ -36,99 +34,124 @@ const Lightbox: React.FC = () => {
 		useState<boolean>(true);
 
 	// states to render
+	const [logoPath, setLogoPath] = useState<string>();
+	const [titleContentName, setTitleContentName] = useState<string>();
+	const [htmlContentName, setHtmlContentName] = useState<string>();
 
-	const [lightboxTitle, setLightboxTitle] = useState<string>(
-		`Conheça o Meu Bônus Vip, novo benefício do Clube Smiles 💜`
-	);
-	const [lightboxContent, setLightboxContent] = useState<string>(
-		'<style>#modal-content p {font-family:Nunito,Arial,sans-serif;color:#666666;font-size:16px;line-height:24px;}</style><div id="modal-content"><p>Ganhe ainda mais milhas ao transferir os pontos do seu cartão de crédito pra Smiles e aproveite um mundo de oportunidades!</p></div>'
-	);
+	const [helpButtonType, setHelpButtonType] = useState<string>();
+	const [helpButtonText, setHelpButtonText] = useState<string>();
+	const [helpButtonAction, setHelpButtonAction] = useState<string>();
 
-	const [helpButtonType, setHelpButtonType] = useState<string>('REDIRECT');
-	const [helpButtonText, setHelpButtonText] = useState<string>(
-		'Conhecer outros planos do Clube'
-	);
-	const [helpButtonAction, setHelpButtonAction] = useState<string>(
-		'/club/smiles/client'
-	);
-
-	const [confirmCheckboxText, setConfirmCheckboxText] = useState<string>(
-		'<style>.terms-text-lbx a{text-decoration: underline;}</style><span class="terms-text-lbx">Li e aceito o <a href="/clube-smiles/regulamento/" target=\'_blank\'>Regulamento do Clube Smiles</a></span>'
-	);
-	const [optOutCheckboxText, setOptOutCheckboxText] = useState<string>(
-		'Não exibir essa mensagem novamente'
-	);
+	const [confirmCheckboxText, setConfirmCheckboxText] = useState<string>();
+	const [optOutCheckboxText, setOptOutCheckboxText] = useState<string>();
 
 	const [confirmButtonType, setConfirmButtonType] =
 		useState<string>('CALLBACK');
 
-	const [confirmButtonText, setConfirmButtonText] =
-		useState<string>('Acessar benefício');
+	const [confirmButtonText, setConfirmButtonText] = useState<string>();
 
-	const [confirmButtonAction, setConfirmButtonAction] = useState<string>(
-		"actionController.goToCheckout('2000','Monthly')"
-	);
+	const [confirmButtonAction, setConfirmButtonAction] = useState<string>();
 
-	const [buttonColor, setButtonColor] = useState<string>(
-		'color-product-club?'
-	);
+	const [buttonColor, setButtonColor] = useState<string>();
 
-	const [cards, setCards] = useState([
-		{
-			id: 436969,
-			iconPath: 'icons/flight.svg',
-			imagePath: 'images/sant.svg',
-			promotion: '15% OFF com Clube Smiles',
-			flyDestiny: 'Santarém (STM)',
-			flyOrigin: 'Saindo de Brasília (BSB)',
-			text: 'A partir de',
-			flyPrice: '6.400 milhas/trecho'
-		},
-		{
-			id: 436969,
-			iconPath: 'icons/flight.svg',
-			imagePath: 'images/sant.svg',
-			promotion: '15% OFF com Clube Smiles',
-			flyDestiny: 'Santarém (STM)',
-			flyOrigin: 'Saindo de Brasília (BSB)',
-			text: 'A partir de',
-			flyPrice: '6.400 milhas/trecho'
-		}
-	]);
+	const [cards, setCards] = useState<any[]>([]);
 
 	// states for logic
 
-	const [searchId, setSearchId] = useState<string | undefined>(
-		'CLUB2000MENSALPROMO'
-	);
-	const [priority, setPriority] = useState<number>(0);
-	const [primaryKey, setPrimaryKey] = useState<string | undefined>(
-		'CLUB2000MENSALPROMO'
-	);
-	const [isTwoMonthToBonusVip, setIsTwoMonthToBonusVip] = useState(null);
-	const [isSuspended, setIsSuspended] = useState(null);
-	const [isRenovationPeriod, setIsRenovationPeriod] = useState(null);
-	const [isOutlet, setIsOutlet] = useState(null);
-	const [isIncompleteData, setIsIncompleteData] = useState(null);
-	const [isForcedOffer, setIsForcedOffer] = useState<string>('Y');
-	const [isCobrandedIsAproved, setisCobrandedIsAproved] = useState(null);
-	const [isClubMember, setIsClubMember] = useState(null);
-	const [hasntAvailableBonusVip, setHasntAvailableBonusVip] = useState(null);
-	const [hasAvailableBonusVip, setHasAvailableBonusVip] = useState(null);
-	const [cookiePeriod, setCookiePeriod] = useState<number>(5);
-	const [cookieName, setCookieName] = useState<string | undefined>(
-		'CLUB2000MENSALPROMO'
-	);
+	const [searchId, setSearchId] = useState<string>();
+	// const [priority, setPriority] = useState<number>(0);
+	// const [primaryKey, setPrimaryKey] = useState<string | undefined>(
+	// 	'CLUB2000MENSALPROMO'
+	// );
+	// const [isTwoMonthToBonusVip, setIsTwoMonthToBonusVip] = useState(null);
+	// const [isSuspended, setIsSuspended] = useState(null);
+	// const [isRenovationPeriod, setIsRenovationPeriod] = useState(null);
+	// const [isOutlet, setIsOutlet] = useState(null);
+	// const [isIncompleteData, setIsIncompleteData] = useState(null);
+	// const [isForcedOffer, setIsForcedOffer] = useState<string>('Y');
+	// const [isCobrandedIsAproved, setIsCobrandedIsAproved] = useState(null);
+	// const [isClubMember, setIsClubMember] = useState(null);
+	// const [hasntAvailableBonusVip, setHasntAvailableBonusVip] = useState(null);
+	// const [hasAvailableBonusVip, setHasAvailableBonusVip] = useState(null);
+	// const [cookiePeriod, setCookiePeriod] = useState<number>(5);
+	// const [cookieName, setCookieName] = useState<string | undefined>(
+	// 	'CLUB2000MENSALPROMO'
+	// );
 
-	// const getData = async () => {
-	// 	const data: Content | any = await asyncGetTerms();
-	// 	if (data) {
-	// 		setModalText(data.modalText);
-	// 		setModalTitle(data.modalTitle);
-	// 		setModalButtonText(data.modalButtonText);
+	const getData = async () => {
+		const data: any = await Data;
+		if (data) {
+			if (data.hasLogo === 'Y') {
+				setHasLogo(true);
 
-	// 	}
-	// };
+				if (data.logoPath) {
+					const logoPathFinal =
+						require(`../../assets/${data.logoPath}`).default;
+					setLogoPath(logoPathFinal);
+				}
+			}
+			if (data.hasConfirmCheckbox === 'Y') {
+				setHasConfirmCheckbox(true);
+			}
+			if (data.hasOptOutCheckbox === 'Y') {
+				setHasOptOutCheckbox(true);
+			}
+			if (data.hasPromotionalCards === 'Y') {
+				setHasPromotionalCards(true);
+			}
+
+			if (data.titleContentName) {
+				setTitleContentName(data.titleContentName);
+			}
+			if (data.htmlContentName) {
+				setHtmlContentName(data.htmlContentName);
+			}
+
+			if (data.buttonColor) {
+				setButtonColor(data.buttonColor);
+			}
+
+			if (data.confirmButtonAction) {
+				setConfirmButtonAction(data.confirmButtonAction);
+			}
+			if (data.confirmButtonText) {
+				setConfirmButtonText(data.confirmButtonText);
+			}
+			if (data.confirmButtonType) {
+				setConfirmButtonType(data.confirmButtonType);
+			}
+
+			if (data.helpButtonAction) {
+				setHelpButtonAction(data.helpButtonAction);
+			}
+			if (data.helpButtonText) {
+				setHelpButtonText(data.helpButtonText);
+			}
+			if (data.helpButtonType) {
+				setHelpButtonType(data.helpButtonType);
+			}
+
+			if (data.confirmCheckbox) {
+				setConfirmCheckboxText(data.confirmCheckbox);
+			}
+
+			if (data.optOutCheckbox) {
+				setOptOutCheckboxText(data.optOutCheckbox);
+			}
+
+			if (data.promotionalCards) {
+				setCards(data.promotionalCards);
+			}
+
+			if (data.promotionalCards) {
+				setCards(data.promotionalCards);
+			}
+
+			if (data.searchId) {
+				setSearchId(data.searchId);
+			}
+		}
+	};
 
 	const modalWidth = () => {
 		if (hasPromotionalCards) {
@@ -138,8 +161,8 @@ const Lightbox: React.FC = () => {
 		}
 	};
 
-	const checkRulesCheckbox = (): void => {
-		setRulesCheckboxIsChecked((prevState) => !prevState);
+	const checkConfirmCheckbox = (): void => {
+		setConfirmCheckboxIsChecked((prevState) => !prevState);
 		setConfirmButtonActive((prevState) => !prevState);
 	};
 	const checkOptOutCheckbox = (): void => {
@@ -153,10 +176,10 @@ const Lightbox: React.FC = () => {
 	};
 
 	useEffect(() => {
-		// getData();
+		getData();
 		modalWidth();
 
-		if (hasRulesCheckbox) {
+		if (hasConfirmCheckbox) {
 			setConfirmButtonActive(false);
 		}
 
@@ -295,7 +318,7 @@ const Lightbox: React.FC = () => {
 	const confirmButtonActionType = (): void => {
 		if (confirmButtonType === 'REDIRECT') {
 			console.log('redirect');
-			<Link to={helpButtonAction} />;
+			window.location.href = helpButtonAction;
 		} else if (confirmButtonType === 'CALLBACK') {
 			console.log('callback');
 			const confirmButtonActionFunction = eval(
@@ -307,7 +330,7 @@ const Lightbox: React.FC = () => {
 
 	const helpButtonRedirectAction = (): void => {
 		console.log('redirect');
-		<Link to={helpButtonAction} />;
+		window.location.href = helpButtonAction;
 	};
 
 	return (
@@ -320,15 +343,15 @@ const Lightbox: React.FC = () => {
 				onClosed={closeModal}
 				className={modalWidthClass}
 			>
-				{hasLogo ? <img className='modal-logo' src={Logo} /> : null}
+				{hasLogo ? <img className='modal-logo' src={logoPath} /> : null}
 
-				<h4 className='modal-title'>{lightboxTitle}</h4>
+				<h4 className='modal-title'>{titleContentName}</h4>
 
-				{hasLightboxContent ? (
+				{hasHtmlContentName ? (
 					<section
 						className='modal-html-content'
 						dangerouslySetInnerHTML={{
-							__html: `${lightboxContent}`
+							__html: `${htmlContentName}`
 						}}
 					/>
 				) : null}
@@ -350,13 +373,13 @@ const Lightbox: React.FC = () => {
 					</div>
 				) : null}
 
-				{hasRulesCheckbox ? (
+				{hasConfirmCheckbox ? (
 					<div className='rules-checkbox'>
 						<SmlsCheckbox
 							className='modal-rules-checkbox'
 							id='acceptRules'
-							checked={rulesCheckboxIsChecked}
-							onClick={checkRulesCheckbox}
+							checked={confirmCheckboxIsChecked}
+							onClick={checkConfirmCheckbox}
 						/>
 						<span
 							className='modal-rules-checkbox-text'
