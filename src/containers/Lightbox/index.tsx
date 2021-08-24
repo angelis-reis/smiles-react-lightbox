@@ -323,84 +323,88 @@ const Lightbox: React.FC = () => {
 				onClosed={closeModal}
 				className={modalWidthClass}
 			>
-				{hasLogo ? <img className='modal-logo' src={logoPath} /> : null}
+				<div className="modal-content-wrapper">
+					{hasLogo ? (
+						<img className='modal-logo' src={logoPath} />
+					) : null}
 
-				<h4 className='modal-title'>{titleContentName}</h4>
+					<h4 className='modal-title'>{titleContentName}</h4>
 
-				{hasHtmlContentName ? (
-					<section
-						className='modal-html-content'
-						dangerouslySetInnerHTML={{
-							__html: `${htmlContentName}`
-						}}
-					/>
-				) : null}
-
-				{hasPromotionalCards ? (
-					<div className='modal-cards'>
-						{cards.map((card) => (
-							<PromotionalCard
-								key={card.id}
-								redirectPath={card.redirectPath}
-								cardIconPath={card.iconPath}
-								cardImagePath={card.imagePath}
-								cardPromotion={card.promotion}
-								cardOrigin={card.flyOrigin}
-								cardDestiny={card.flyDestiny}
-								cardText={card.text}
-								cardPrice={card.flyPrice}
-							/>
-						))}
-					</div>
-				) : null}
-
-				{hasConfirmCheckbox ? (
-					<div className='rules-checkbox'>
-						<SmlsCheckbox
-							className='modal-rules-checkbox'
-							id='acceptRules'
-							checked={confirmCheckboxIsChecked}
-							onClick={checkConfirmCheckbox}
-						/>
-						<span
-							className='modal-rules-checkbox-text'
+					{hasHtmlContentName ? (
+						<section
+							className='modal-html-content'
 							dangerouslySetInnerHTML={{
-								__html: `${confirmCheckboxText}`
+								__html: `${htmlContentName}`
 							}}
 						/>
+					) : null}
+
+					{hasPromotionalCards ? (
+						<div className='modal-cards'>
+							{cards.map((card) => (
+								<PromotionalCard
+									key={card.id}
+									redirectPath={card.redirectPath}
+									cardIconPath={card.iconPath}
+									cardImagePath={card.imagePath}
+									cardPromotion={card.promotion}
+									cardOrigin={card.flyOrigin}
+									cardDestiny={card.flyDestiny}
+									cardText={card.text}
+									cardPrice={card.flyPrice}
+								/>
+							))}
+						</div>
+					) : null}
+
+					{hasConfirmCheckbox ? (
+						<div className='rules-checkbox'>
+							<SmlsCheckbox
+								className='modal-rules-checkbox'
+								id='acceptRules'
+								checked={confirmCheckboxIsChecked}
+								onClick={checkConfirmCheckbox}
+							/>
+							<span
+								className='modal-rules-checkbox-text'
+								dangerouslySetInnerHTML={{
+									__html: `${confirmCheckboxText}`
+								}}
+							/>
+						</div>
+					) : null}
+
+					<div className='modal-confirm-button'>
+						<SmlsButton
+							className={buttonColor}
+							color='primary'
+							id='btn_confirmPassword'
+							text={confirmButtonText}
+							disabled={!confirmButtonActive}
+							onClick={confirmButtonActionType}
+						/>
 					</div>
-				) : null}
 
-				<div className='modal-confirm-button'>
-					<SmlsButton
-						className={buttonColor}
-						color='primary'
-						id='btn_confirmPassword'
-						text={confirmButtonText}
-						disabled={!confirmButtonActive}
-						onClick={confirmButtonActionType}
-					/>
+					{hasHelpButton ? (
+						<SmlsButton
+							className='modal-help-button'
+							color='hyperlink'
+							id='btn_help'
+							text={helpButtonText}
+							onClick={helpButtonRedirectAction}
+						/>
+					) : null}
+
+					{hasOptOutCheckbox ? (
+						<SmlsCheckbox
+							className='modal-opt-out-checkbox'
+							id='optOut'
+							label={optOutCheckboxText}
+							checked={optOutCheckboxIsChecked}
+							onClick={checkOptOutCheckbox}
+						/>
+					) : null}
 				</div>
-
-				{hasHelpButton ? (
-					<SmlsButton
-						className='modal-help-button'
-						color='hyperlink'
-						id='btn_help'
-						text={helpButtonText}
-						onClick={helpButtonRedirectAction}
-					/>
-				) : null}
-
-				{hasOptOutCheckbox ? (
-					<SmlsCheckbox
-						className='modal-opt-out-checkbox'
-						id='optOut'
-						label={optOutCheckboxText}
-						checked={optOutCheckboxIsChecked}
-						onClick={checkOptOutCheckbox}
-					/>
-				) : null}
 			</SmlsModal>
 		</>
 	);
