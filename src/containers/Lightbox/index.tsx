@@ -7,7 +7,7 @@ import {
 	SmlsButton
 } from '@smiles/smiles-ui-kit-react';
 // import { asyncGetTerms } from '../../services/getTerms/index';
-import Data from '../../services/getTerms/newModelData';
+import {jsonData} from '../../services/getTerms/newModelData';
 import { PromotionalCard } from '../../components/PromotionalCards/index';
 
 const Lightbox: React.FC = () => {
@@ -78,7 +78,8 @@ const Lightbox: React.FC = () => {
 	// );
 
 	const getData = async () => {
-		const data: any = await Data;
+		const data: any = await jsonData();
+		console.log('Koca: data ', data);
 		if (data) {
 			if (data.hasLogo === 'Y') {
 				setHasLogo(true);
@@ -90,6 +91,7 @@ const Lightbox: React.FC = () => {
 			}
 			if (data.hasConfirmCheckbox === 'Y') {
 				setHasConfirmCheckbox(true);
+				setConfirmButtonActive(false);
 			}
 			if (data.hasOptOutCheckbox === 'Y') {
 				setHasOptOutCheckbox(true);
@@ -124,6 +126,7 @@ const Lightbox: React.FC = () => {
 				setHelpButtonAction(data.helpButtonAction);
 			}
 			if (data.helpButtonText) {
+				setHasHelpButton(true);
 				setHelpButtonText(data.helpButtonText);
 			}
 			if (data.helpButtonType) {
