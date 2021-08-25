@@ -7,11 +7,11 @@ import {
 	SmlsButton
 } from '@smiles/smiles-ui-kit-react';
 // import { asyncGetTerms } from '../../services/getTerms/index';
-import {jsonData} from '../../services/getTerms/newModelData';
+import { jsonData } from '../../services/getTerms/newModelData';
 import { PromotionalCard } from '../../components/PromotionalCards/index';
 
 const Lightbox: React.FC = () => {
-	const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(true);
+	const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(false);
 	const [optOutCookies, setOptOutCookies] = useState<string>(
 		localStorage.getItem('cookies')
 	);
@@ -161,13 +161,20 @@ const Lightbox: React.FC = () => {
 	};
 	const checkOptOutCheckbox = (): void => {
 		setOptOutCheckboxIsChecked((prevState) => !prevState);
-	};
-	const closeModal = () => {
-		if (optOutCheckboxIsChecked) {
+		if (!optOutCheckboxIsChecked) {
 			localStorage.setItem('cookies', 'optedOut');
 			setOptOutCookies('optedOut');
+		} else {
+			localStorage.removeItem('cookies');
+			setOptOutCookies(null);
 		}
 	};
+	// const closeModal = () => {
+	// 	if (optOutCheckboxIsChecked &&) {
+	// 		// localStorage.setItem('cookies', 'optedOut');
+	// 		// setOptOutCookies('optedOut');
+	// 	}
+	// };
 
 	const actionController = {
 		goToCheckout: (milesQuantity: string, typePayment: string) => {
@@ -277,10 +284,6 @@ const Lightbox: React.FC = () => {
 		}
 	};
 
-	if (optOutCookies === 'optedOut') {
-		return null;
-	}
-
 	const confirmButtonActionType = (): void => {
 		if (confirmButtonType === 'REDIRECT') {
 			console.log('redirect');
@@ -303,11 +306,9 @@ const Lightbox: React.FC = () => {
 
 	useEffect(() => {
 		getData();
-
 		if (hasConfirmCheckbox) {
 			setConfirmButtonActive(false);
 		}
-
 		const showModal = setTimeout(() => {
 			setIsOpenlightbox(true);
 		}, 800);
@@ -316,6 +317,13 @@ const Lightbox: React.FC = () => {
 		};
 	}, []);
 
+	useEffect(() => {
+		if (optOutCookies === 'optedOut') {
+			return null;
+		}
+	}, [isOpenlightbox]);
+
+
 	return (
 		<>
 			<SmlsModal
@@ -323,10 +331,10 @@ const Lightbox: React.FC = () => {
 				isOpen={isOpenlightbox}
 				type='right'
 				toggle={() => setIsOpenlightbox(!isOpenlightbox)}
-				onClosed={closeModal}
+				// onClosed={closeModal}
 				className={modalWidthClass}
 			>
-				<div className="modal-content-wrapper">
+				<div className='modal-content-wrapper'>
 					{hasLogo ? (
 						<img className='modal-logo' src={logoPath} />
 					) : null}
