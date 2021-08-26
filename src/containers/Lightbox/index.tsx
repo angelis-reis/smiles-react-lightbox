@@ -11,7 +11,7 @@ import { jsonData } from '../../services/getTerms/newModelData';
 import { PromotionalCard } from '../../components/PromotionalCards/index';
 
 const Lightbox: React.FC = () => {
-	const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(false);
+	const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(true);
 	const [optOutCookies, setOptOutCookies] = useState<string>(
 		localStorage.getItem('cookies')
 	);
@@ -79,7 +79,6 @@ const Lightbox: React.FC = () => {
 
 	const getData = async () => {
 		const data: any = await jsonData();
-		console.log('Koca: data ', data);
 		if (data) {
 			if (data.hasLogo === 'Y') {
 				setHasLogo(true);
@@ -161,20 +160,13 @@ const Lightbox: React.FC = () => {
 	};
 	const checkOptOutCheckbox = (): void => {
 		setOptOutCheckboxIsChecked((prevState) => !prevState);
-		if (!optOutCheckboxIsChecked) {
+	};
+	const closeModal = () => {
+		if (optOutCheckboxIsChecked) {
 			localStorage.setItem('cookies', 'optedOut');
 			setOptOutCookies('optedOut');
-		} else {
-			localStorage.removeItem('cookies');
-			setOptOutCookies(null);
 		}
 	};
-	// const closeModal = () => {
-	// 	if (optOutCheckboxIsChecked &&) {
-	// 		// localStorage.setItem('cookies', 'optedOut');
-	// 		// setOptOutCookies('optedOut');
-	// 	}
-	// };
 
 	const actionController = {
 		goToCheckout: (milesQuantity: string, typePayment: string) => {
@@ -304,25 +296,28 @@ const Lightbox: React.FC = () => {
 		window.location.href = helpButtonAction;
 	};
 
-	useEffect(() => {
-		getData();
-		if (hasConfirmCheckbox) {
-			setConfirmButtonActive(false);
-		}
+	const modalAnimation = () => {
 		const showModal = setTimeout(() => {
 			setIsOpenlightbox(true);
 		}, 800);
 		return () => {
 			clearTimeout(showModal);
 		};
-	}, []);
+	};
 
 	useEffect(() => {
-		if (optOutCookies === 'optedOut') {
-			return null;
+		getData();
+		if (hasConfirmCheckbox) {
+			setConfirmButtonActive(false);
 		}
-	}, [isOpenlightbox]);
+		// modalAnimation();
+	}, []);
 
+	useEffect(() => {}, [isOpenlightbox]);
+
+	if (optOutCookies === 'optedOut') {
+		return null;
+	}
 
 	return (
 		<>
@@ -331,7 +326,7 @@ const Lightbox: React.FC = () => {
 				isOpen={isOpenlightbox}
 				type='right'
 				toggle={() => setIsOpenlightbox(!isOpenlightbox)}
-				// onClosed={closeModal}
+				onClosed={closeModal}
 				className={modalWidthClass}
 			>
 				<div className='modal-content-wrapper'>
