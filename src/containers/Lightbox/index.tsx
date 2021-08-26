@@ -7,7 +7,7 @@ import {
 	SmlsButton
 } from '@smiles/smiles-ui-kit-react';
 // import { asyncGetTerms } from '../../services/getTerms/index';
-import {jsonData} from '../../services/getTerms/newModelData';
+import { jsonData } from '../../services/getTerms/newModelData';
 import { PromotionalCard } from '../../components/PromotionalCards/index';
 
 const Lightbox: React.FC = () => {
@@ -79,7 +79,6 @@ const Lightbox: React.FC = () => {
 
 	const getData = async () => {
 		const data: any = await jsonData();
-		console.log('Koca: data ', data);
 		if (data) {
 			if (data.hasLogo === 'Y') {
 				setHasLogo(true);
@@ -277,10 +276,6 @@ const Lightbox: React.FC = () => {
 		}
 	};
 
-	if (optOutCookies === 'optedOut') {
-		return null;
-	}
-
 	const confirmButtonActionType = (): void => {
 		if (confirmButtonType === 'REDIRECT') {
 			console.log('redirect');
@@ -301,20 +296,28 @@ const Lightbox: React.FC = () => {
 		window.location.href = helpButtonAction;
 	};
 
-	useEffect(() => {
-		getData();
-
-		if (hasConfirmCheckbox) {
-			setConfirmButtonActive(false);
-		}
-
+	const modalAnimation = () => {
 		const showModal = setTimeout(() => {
 			setIsOpenlightbox(true);
 		}, 800);
 		return () => {
 			clearTimeout(showModal);
 		};
+	};
+
+	useEffect(() => {
+		getData();
+		if (hasConfirmCheckbox) {
+			setConfirmButtonActive(false);
+		}
+		// modalAnimation();
 	}, []);
+
+	useEffect(() => {}, [isOpenlightbox]);
+
+	if (optOutCookies === 'optedOut') {
+		return null;
+	}
 
 	return (
 		<>
@@ -326,7 +329,7 @@ const Lightbox: React.FC = () => {
 				onClosed={closeModal}
 				className={modalWidthClass}
 			>
-				<div className="modal-content-wrapper">
+				<div className='modal-content-wrapper'>
 					{hasLogo ? (
 						<img className='modal-logo' src={logoPath} />
 					) : null}
