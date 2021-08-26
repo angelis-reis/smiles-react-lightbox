@@ -296,24 +296,29 @@ const Lightbox: React.FC = () => {
 		window.location.href = helpButtonAction;
 	};
 
-	const modalAnimation = () => {
-		const showModal = setTimeout(() => {
-			setIsOpenlightbox(true);
-		}, 800);
-		return () => {
-			clearTimeout(showModal);
-		};
-	};
+	// const modalAnimation = () => {
+	// 	const showModal = setTimeout(() => {
+	// 		setIsOpenlightbox(true);
+	// 	}, 800);
+	// 	return () => {
+	// 		clearTimeout(showModal);
+	// 	};
+	// };
 
-	useEffect(() => {
-		getData();
+	const activeButton = () => {
 		if (hasConfirmCheckbox) {
 			setConfirmButtonActive(false);
 		}
+	}
+
+	useEffect(() => {
+		getData();
+		activeButton();
+
 		// modalAnimation();
 	}, []);
 
-	useEffect(() => {}, [isOpenlightbox]);
+	// useEffect(() => {}, [isOpenlightbox]);
 
 	if (optOutCookies === 'optedOut') {
 		return null;
