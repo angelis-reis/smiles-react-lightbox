@@ -13,7 +13,7 @@ const getTerms = async (): Promise<IFinalResponse> => {
 			{
 				param: 'friendlyUrlPath',
 				conditional: 'eq',
-				value: 'Lightbox_politica_cookies'
+				value: 'lbox_club2000mensalpromo'
 			}
 		]
 	});
@@ -23,28 +23,28 @@ const getTerms = async (): Promise<IFinalResponse> => {
 export const asyncGetTerms = async () => {
 	const response = await getTerms();
 	const data = response.data as Array<IHeadlessResponse>;
-	if (!data.length) return;
-	let title: string = '';
-	let style: string = '';
-	let content: string = '';
+	// if (!data.length) return;
+	// let title: string = '';
+	// let style: string = '';
+	// let content: string = '';
 
-	data[0].contentFields.forEach((innerContent: any) => {
-		const { name, contentFieldValue } = innerContent;
-		if (name === 'headline') {
-			title = String(innerContent.contentFieldValue.data);
-		}
-		if (name === 'stylesheetWeb') {
-			style = String(innerContent.contentFieldValue.data);
-		}
-		if (name === 'content') {
-			content = String(innerContent.contentFieldValue.data);
-		}
-	});
-	let styleString = ` <style> ${style} </style>`;
-	let completeHtml = styleString.concat(content);
-	let modalContent: Content = {
-		modalTitle: title,
-		modalText: completeHtml
-	};
-	return modalContent;
+	// data[0].contentFields.forEach((innerContent: any) => {
+	// 	const { name, contentFieldValue } = innerContent;
+	// 	if (name === 'headline') {
+	// 		title = String(innerContent.contentFieldValue.data);
+	// 	}
+	// 	if (name === 'stylesheetWeb') {
+	// 		style = String(innerContent.contentFieldValue.data);
+	// 	}
+	// 	if (name === 'content') {
+	// 		content = String(innerContent.contentFieldValue.data);
+	// 	}
+	// });
+	// let styleString = ` <style> ${style} </style>`;
+	// let completeHtml = styleString.concat(content);
+	// let modalContent: Content = {
+	// 	modalTitle: title,
+	// 	modalText: completeHtml
+	// };
+	// return modalContent;
 };
