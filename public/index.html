@@ -16,7 +16,7 @@
 					const res = rx.exec(window.location.hostname);
 					smlsEnv =
 						res === null
-							? 'dev4'
+							? 'dev6'
 							: res[2] === 'www'
 							? 'prd'
 							: res[2];
@@ -24,10 +24,10 @@
 				})();
 				function getStyleHost() {
 					if (window.location.hostname.indexOf('localhost') > -1) {
-						window.env = 'portal-dev4';
+						window.env = 'portal-dev6';
 						return 'https://localhost:3010';
 					}
-					let env = 'portal-dev4';
+					let env = 'portal-dev6';
 					const rx = /^(.*)\.smiles\.com\.br/g;
 					const res = rx.exec(window.location.hostname);
 					if (res !== null) {
@@ -48,7 +48,7 @@
 							'login-hml.smiles.com.br'
 						) > -1
 					) {
-						env += '4';
+						env += '6';
 					}
 					window.env = env;
 					// if not production, add '-'

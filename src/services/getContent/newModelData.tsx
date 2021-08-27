@@ -22,7 +22,6 @@ export const jsonData = async () => {
 		hasPromotionalCards: 'Y',
 		promotionalCards: [
 			{
-				id: 436669,
 				iconPath: 'icons/flight.svg',
 				imagePath: 'images/sant.svg',
 				promotion: '15% OFF com Clube Smiles',
@@ -33,7 +32,6 @@ export const jsonData = async () => {
 				redirectPath: '/clube-smiles/natal'
 			},
 			{
-				id: 436969,
 				iconPath: 'icons/flight.svg',
 				imagePath: 'images/sant.svg',
 				promotion: '15% OFF com Clube Smiles',
@@ -46,17 +44,6 @@ export const jsonData = async () => {
 		],
 		cookieName: 'CLUB2000MENSALPROMO',
 		cookiePeriod: 5,
-		hasAvailableBonusVip: null,
-		isClubMember: null,
-		isCobrandedIsAproved: null,
-		isForcedOffer: 'Y',
-		isIncompleteData: null,
-		isOutlet: null,
-		isRenovationPeriod: null,
-		isSuspended: null,
-		isTwoMonthToBonusVip: null,
-		primaryKey: 'CLUB2000MENSALPROMO',
-		priority: 0,
 		searchId: 'CLUB2000MENSALPROMO'
 	};
 

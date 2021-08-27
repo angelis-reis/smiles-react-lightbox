@@ -30,7 +30,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Lightbox from './index';
-import * as mockNewModalData from '../../services/getTerms/newModelData';
+import * as mockNewModalData from '../../services/getContent/newModelData';
 
 window.scroll = jest.fn();
 
