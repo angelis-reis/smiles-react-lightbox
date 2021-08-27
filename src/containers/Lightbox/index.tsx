@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
-
 import {
 	SmlsModal,
 	SmlsCheckbox,
 	SmlsButton
 } from '@smiles/smiles-ui-kit-react';
-// import { asyncGetTerms } from '../../services/getTerms/index';
-import { jsonData } from '../../services/getTerms/newModelData';
+import { jsonData } from '../../services/getContent/newModelData';
+import { asyncGetContent } from '../../services/getContent/index';
 import { PromotionalCard } from '../../components/PromotionalCards/index';
 
 const Lightbox: React.FC = () => {
@@ -78,6 +76,9 @@ const Lightbox: React.FC = () => {
 	// );
 
 	const getData = async () => {
+		const realData: any = await asyncGetContent();
+		// console.log('Koca: realData ', realData);
+
 		const data: any = await jsonData();
 		if (data) {
 			if (data.hasLogo === 'Y') {
@@ -309,7 +310,7 @@ const Lightbox: React.FC = () => {
 		if (hasConfirmCheckbox) {
 			setConfirmButtonActive(false);
 		}
-	}
+	};
 
 	useEffect(() => {
 		getData();
@@ -354,14 +355,12 @@ const Lightbox: React.FC = () => {
 						<div className='modal-cards'>
 							{cards.map((card) => (
 								<PromotionalCard
-									key={card.id}
 									redirectPath={card.redirectPath}
 									cardIconPath={card.iconPath}
 									cardImagePath={card.imagePath}
 									cardPromotion={card.promotion}
 									cardOrigin={card.flyOrigin}
 									cardDestiny={card.flyDestiny}
-									cardText={card.text}
 									cardPrice={card.flyPrice}
 								/>
 							))}

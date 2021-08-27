@@ -1,8 +1,4 @@
 export interface IPromotionalCard {
-	key?: number | string;
-	/**
-	 * PromotionalCard color
-	 */
 	redirectPath?: string;
 	/**
 	 * PromotionalCard color
@@ -26,10 +22,6 @@ export interface IPromotionalCard {
 	cardDestiny?: string;
 	/**
 	 * PromotionalCard height
-	 */
-	cardText?: string;
-	/**
-	 * PromotionalCard direction
 	 */
 	cardPrice?: string;
 	/**
