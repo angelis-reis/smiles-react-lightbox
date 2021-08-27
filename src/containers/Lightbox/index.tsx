@@ -56,47 +56,33 @@ const Lightbox: React.FC = () => {
 	// states for logic
 
 	const [searchId, setSearchId] = useState<string>();
-	// const [priority, setPriority] = useState<number>(0);
-	// const [primaryKey, setPrimaryKey] = useState<string | undefined>(
-	// 	'CLUB2000MENSALPROMO'
-	// );
-	// const [isTwoMonthToBonusVip, setIsTwoMonthToBonusVip] = useState(null);
-	// const [isSuspended, setIsSuspended] = useState(null);
-	// const [isRenovationPeriod, setIsRenovationPeriod] = useState(null);
-	// const [isOutlet, setIsOutlet] = useState(null);
-	// const [isIncompleteData, setIsIncompleteData] = useState(null);
-	// const [isForcedOffer, setIsForcedOffer] = useState<string>('Y');
-	// const [isCobrandedIsAproved, setIsCobrandedIsAproved] = useState(null);
-	// const [isClubMember, setIsClubMember] = useState(null);
-	// const [hasntAvailableBonusVip, setHasntAvailableBonusVip] = useState(null);
-	// const [hasAvailableBonusVip, setHasAvailableBonusVip] = useState(null);
-	// const [cookiePeriod, setCookiePeriod] = useState<number>(5);
-	// const [cookieName, setCookieName] = useState<string | undefined>(
-	// 	'CLUB2000MENSALPROMO'
-	// );
+
+	const [cookiePeriod, setCookiePeriod] = useState<number>();
+	const [cookieName, setCookieName] = useState<string | undefined>('');
 
 	const getData = async () => {
-		const realData: any = await asyncGetContent();
-		// console.log('Koca: realData ', realData);
+		const data: any = await asyncGetContent();
+		console.table(data);
 
-		const data: any = await jsonData();
+		const fakeData: any = await jsonData();
 		if (data) {
-			if (data.hasLogo === 'Y') {
+			if (data.hasLogo === 'true') {
 				setHasLogo(true);
 				if (data.logoPath) {
 					const logoPathFinal =
-						require(`../../assets/${data.logoPath}`).default;
+						// require(`${data.logoPath}`).default;
+						require(`../../assets/${fakeData.logoPath}`).default;
 					setLogoPath(logoPathFinal);
 				}
 			}
-			if (data.hasConfirmCheckbox === 'Y') {
+			if (data.hasConfirmCheckbox === 'true') {
 				setHasConfirmCheckbox(true);
 				setConfirmButtonActive(false);
 			}
-			if (data.hasOptOutCheckbox === 'Y') {
+			if (data.hasOptOutCheckbox === 'true') {
 				setHasOptOutCheckbox(true);
 			}
-			if (data.hasPromotionalCards === 'Y') {
+			if (data.hasPromotionalCards === 'true') {
 				setHasPromotionalCards(true);
 				setModalWidthClass('width-664');
 			}
@@ -109,19 +95,31 @@ const Lightbox: React.FC = () => {
 			}
 
 			if (data.buttonColor) {
-				setButtonColor(data.buttonColor);
+				let buttonColorContent: string = data.buttonColor;
+				let edit1 = buttonColorContent.replace(`[\"`, '');
+				let edit2 = edit1.replace(`"\]`, '');
+				console.log('Koca: buttonColorContent ', edit2);
+				setButtonColor(edit2);
 			}
 
 			if (data.confirmButtonAction) {
-				setConfirmButtonAction(data.confirmButtonAction);
+				let confirmButtonActionContent: string =
+					data.confirmButtonAction;
+				let edit1 = confirmButtonActionContent.replace(`[\"`, '');
+				let edit2 = edit1.replace(`"\]`, '');
+				console.log('Koca: confirmButtonActionContent ', edit2);
+				setConfirmButtonAction(edit2);
 			}
 			if (data.confirmButtonText) {
 				setConfirmButtonText(data.confirmButtonText);
 			}
 			if (data.confirmButtonType) {
-				setConfirmButtonType(data.confirmButtonType);
+				let confirmButtonTypeContent: string = data.confirmButtonType;
+				let edit1 = confirmButtonTypeContent.replace(`[\"`, '');
+				let edit2 = edit1.replace(`"\]`, '');
+				console.log('Koca: confirmButtonTypeContent ', edit2);
+				setConfirmButtonType(edit2);
 			}
-
 			if (data.helpButtonAction) {
 				setHelpButtonAction(data.helpButtonAction);
 			}
@@ -130,7 +128,11 @@ const Lightbox: React.FC = () => {
 				setHelpButtonText(data.helpButtonText);
 			}
 			if (data.helpButtonType) {
-				setHelpButtonType(data.helpButtonType);
+				let helpButtonTypeContent: string = data.helpButtonType;
+				let edit1 = helpButtonTypeContent.replace(`[\"`, '');
+				let edit2 = edit1.replace(`"\]`, '');
+				console.log('Koca: helpButtonTypeContent ', edit2);
+				setHelpButtonType(edit2);
 			}
 
 			if (data.confirmCheckbox) {
@@ -142,15 +144,16 @@ const Lightbox: React.FC = () => {
 			}
 
 			if (data.promotionalCards) {
-				setCards(data.promotionalCards);
+				// setCards(data.promotionalCards);
+				setCards(fakeData.promotionalCards);
 			}
 
-			if (data.promotionalCards) {
-				setCards(data.promotionalCards);
+			if (data.cookieName) {
+				setCookieName(data.cookieName);
 			}
 
-			if (data.searchId) {
-				setSearchId(data.searchId);
+			if (data.cookiePeriod) {
+				setCookiePeriod(data.cookiePeriod);
 			}
 		}
 	};

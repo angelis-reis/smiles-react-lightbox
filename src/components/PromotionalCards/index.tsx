@@ -13,8 +13,12 @@ export const PromotionalCard: React.FC<IPromotionalCard> = ({
 	redirectPath,
 	...props
 }) => {
+	// const iconPathFinal = require(`${cardIconPath}`).default;
+	// const imagePathFinal = require(`${cardImagePath}`).default;
+
 	const iconPathFinal = require(`../../assets/${cardIconPath}`).default;
 	const imagePathFinal = require(`../../assets/${cardImagePath}`).default;
+
 	return (
 		<Router>
 			<Link to={redirectPath} className='card-link'>
