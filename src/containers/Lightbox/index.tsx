@@ -366,8 +366,7 @@ const Lightbox: React.FC = () => {
 		<>
 			{hasData ? (
 				<SmlsModal
-					idBtnClose=''
-					id={searchId}
+					idBtnClose='btn_closeLightbox'
 					isOpen={isOpenlightbox}
 					type='right'
 					toggle={() => setIsOpenlightbox(!isOpenlightbox)}
@@ -376,19 +375,20 @@ const Lightbox: React.FC = () => {
 				>
 					<div className='modal-content-wrapper'>
 						{hasLogo ? (
-							<img className='modal-logo' src={logoPath} />
+							<img
+								className='modal-logo'
+								src={logoPath}
+								id='lbl_logoLightbox'
+							/>
 						) : null}
 
-						<h4
-							id='lbl_titleBonusVipClubSmiles'
-							className='modal-title'
-						>
+						<h4 id='lbl_titleLightbox' className='modal-title'>
 							{titleContentName}
 						</h4>
 
 						{hasHtmlContentName ? (
 							<section
-								id=''
+								id='lbl_msgLightbox'
 								className='modal-html-content'
 								dangerouslySetInnerHTML={{
 									__html: `${htmlContentName}`
@@ -417,12 +417,12 @@ const Lightbox: React.FC = () => {
 							<div className='rules-checkbox'>
 								<SmlsCheckbox
 									className='modal-rules-checkbox'
-									id='acceptRules'
+									id='chk_regulationLightbox'
 									checked={confirmCheckboxIsChecked}
 									onClick={checkConfirmCheckbox}
 								/>
 								<span
-									id='acceptRules'
+									id='lbl_regulationLightbox'
 									className='modal-rules-checkbox-text'
 									dangerouslySetInnerHTML={{
 										__html: `${confirmCheckboxText}`
@@ -435,7 +435,7 @@ const Lightbox: React.FC = () => {
 							<SmlsButton
 								className={buttonColor}
 								color='primary'
-								id='btn_confirmPassword'
+								id='btn_primaryLightbox'
 								text={confirmButtonText}
 								disabled={!confirmButtonActive}
 								onClick={confirmButtonActionType}
@@ -446,7 +446,7 @@ const Lightbox: React.FC = () => {
 							<SmlsButton
 								className='modal-help-button'
 								color='hyperlink'
-								id='btn_help'
+								id='btn_secondaryLightbox'
 								text={helpButtonText}
 								onClick={helpButtonRedirectAction}
 							/>
@@ -455,7 +455,8 @@ const Lightbox: React.FC = () => {
 						{hasOptOutCheckbox ? (
 							<SmlsCheckbox
 								className='modal-opt-out-checkbox'
-								id='optOut'
+								id='chk_doNotShowLightbox'
+								idLabel='lbl_doNotShowLightbox'
 								label={optOutCheckboxText}
 								checked={optOutCheckboxIsChecked}
 								onClick={checkOptOutCheckbox}
