@@ -27,4 +27,8 @@ export interface IPromotionalCard {
 	/**
 	 * PromotionalCard height
 	 */
+	cardId?: string;
+	/**
+	 * PromotionalCard height
+	 */
 }

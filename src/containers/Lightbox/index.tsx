@@ -360,12 +360,13 @@ const Lightbox: React.FC = () => {
 
 	if (optOutCookies === 'optedOut') {
 		console.log('VAZIO');
-		return null;
+		// return null;
 	}
 	return (
 		<>
 			{hasData ? (
 				<SmlsModal
+					idBtnClose=''
 					id={searchId}
 					isOpen={isOpenlightbox}
 					type='right'
@@ -378,10 +379,16 @@ const Lightbox: React.FC = () => {
 							<img className='modal-logo' src={logoPath} />
 						) : null}
 
-						<h4 className='modal-title'>{titleContentName}</h4>
+						<h4
+							id='lbl_titleBonusVipClubSmiles'
+							className='modal-title'
+						>
+							{titleContentName}
+						</h4>
 
 						{hasHtmlContentName ? (
 							<section
+								id=''
 								className='modal-html-content'
 								dangerouslySetInnerHTML={{
 									__html: `${htmlContentName}`
@@ -393,6 +400,7 @@ const Lightbox: React.FC = () => {
 							<div className='modal-cards'>
 								{cards.map((card) => (
 									<PromotionalCard
+										cardId=''
 										redirectPath={card.redirectPath}
 										cardIconPath={card.iconPath}
 										cardImagePath={card.imagePath}
@@ -414,6 +422,7 @@ const Lightbox: React.FC = () => {
 									onClick={checkConfirmCheckbox}
 								/>
 								<span
+									id='acceptRules'
 									className='modal-rules-checkbox-text'
 									dangerouslySetInnerHTML={{
 										__html: `${confirmCheckboxText}`

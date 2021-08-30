@@ -11,6 +11,7 @@ export const PromotionalCard: React.FC<IPromotionalCard> = ({
 	cardIconPath,
 	cardImagePath,
 	redirectPath,
+	cardId,
 	...props
 }) => {
 	// const iconPathFinal = require(`${cardIconPath}`).default;
@@ -23,20 +24,32 @@ export const PromotionalCard: React.FC<IPromotionalCard> = ({
 		<Router>
 			<Link to={redirectPath} className='card-link'>
 				<div
+					id=''
 					className='promotional-card'
 					style={{ backgroundImage: `url(${imagePathFinal})` }}
 				>
 					<div className='card-wrapper'>
 						<img
+							id=''
 							className='card-icon'
 							src={iconPathFinal}
 							alt='Ícone de avião'
 						/>
-						<span className='card-promotion'>{cardPromotion}</span>
-						<span className='card-origin'>{cardOrigin}</span>
-						<span className='card-destiny'>{cardDestiny}</span>
-						<span className='card-text'>A partir de</span>
-						<span className='card-price'>{cardPrice}</span>
+						<span id='' className='card-promotion'>
+							{cardPromotion}
+						</span>
+						<span id='' className='card-origin'>
+							{cardOrigin}
+						</span>
+						<span id='' className='card-destiny'>
+							{cardDestiny}
+						</span>
+						<span id='' className='card-text'>
+							A partir de
+						</span>
+						<span id='' className='card-price'>
+							{cardPrice}
+						</span>
 					</div>
 				</div>
 			</Link>

@@ -30,7 +30,7 @@ interface Content {
 	optOutCheckbox: string;
 	hasPromotionalCards: string;
 	promotionalCards: Cards[];
-	redirectPath: string,
+	redirectPath: string;
 	cookieName: string;
 	cookiePeriod: number;
 }
@@ -52,7 +52,7 @@ const getContent = async (): Promise<IFinalResponse> => {
 
 export const asyncGetContent = async () => {
 	const response = await getContent();
-	// const data = {
+	// const response = {
 	// 	hasLogo: 'true',
 	// 	logoPath:
 	// 		'/documents/20124/149824/outlet_club.svg/386dcfd4-343d-a500-960a-6c5856810928?t=1629963728009',
@@ -103,6 +103,7 @@ export const asyncGetContent = async () => {
 	// 	cookiePeriod: '5'
 	// };
 	const data = response.data as Array<IHeadlessResponse>;
+	console.log('Koca: data ', data);
 	if (!data.length) return;
 	let promotionalCard: Cards = {
 		iconPath: '',
