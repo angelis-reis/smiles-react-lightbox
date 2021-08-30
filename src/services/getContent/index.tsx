@@ -47,10 +47,61 @@ const getContent = async (): Promise<IFinalResponse> => {
 		]
 	});
 	return data;
+	console.log('Koca: data ', data);
 };
 
 export const asyncGetContent = async () => {
 	const response = await getContent();
+	// const data = {
+	// 	hasLogo: 'true',
+	// 	logoPath:
+	// 		'/documents/20124/149824/outlet_club.svg/386dcfd4-343d-a500-960a-6c5856810928?t=1629963728009',
+	// 	titleContentName:
+	// 		'Que tal ganhar o dobro de milhas a cada 3 meses e aproveitar ainda mais benefícios exclusivos?',
+	// 	htmlContentName:
+	// 		'<style>#modal-content p {font-family:Nunito,Arial,sans-serif;color:#666666;font-size:16px;line-height:24px;}</style><div id="modal-content"><p>Ganhe ainda mais milhas ao transferir os pontos do seu cartão de crédito pra Smiles e aproveite um mundo de oportunidades!</p></div>',
+	// 	buttonColor: '["color-product-club"]',
+	// 	confirmButtonAction: '["upgradeClube"]',
+	// 	confirmButtonActionParams: '2000, Monthly',
+	// 	confirmButtonText: 'Subir',
+	// 	confirmButtonType: '["CALLBACK"]',
+	// 	helpButtonAction: '/clube-smiles/clientes',
+	// 	helpButtonText: 'Conhecer outros planos do Clube',
+	// 	helpButtonType: '["REDIRECT"]',
+	// 	hasConfirmCheckbox: 'true',
+	// 	confirmCheckbox:
+	// 		'<style>.terms-text-lbx a{text-decoration: underline;}</style><span class="terms-text-lbx">Li e aceito o <a href="/clube-smiles/regulamento/" target=\'_blank\'>Regulamento do Clube Smiles</a></span>',
+	// 	hasOptOutCheckbox: 'true',
+	// 	optOutCheckbox: 'Não exibir essa mensagem novamente',
+	// 	hasPromotionalCards: 'true',
+	// 	promotionalCards: [
+	// 		{
+	// 			iconPath:
+	// 				'/documents/20124/149824/flight_white.svg/352abcb9-3d2d-720a-97b2-a6493dd06f42?t=1629963726283',
+	// 			imagePath:
+	// 				'/documents/20124/149827/porto_alegre.jpg/bd50f06a-8b0c-6314-aac0-dfaadd92b467?t=1629963755364',
+	// 			promotion: '15 OFF com Clube Smiles',
+	// 			flyDestiny: 'Porto Alegre (POA)',
+	// 			flyOrigin: 'Saindo de São Paulo (GRU)',
+	// 			flyPrice: '9.700 milhas/trecho',
+	// 			redirectPath: ''
+	// 		},
+	// 		{
+	// 			iconPath:
+	// 				'/documents/20124/149824/flight_white.svg/352abcb9-3d2d-720a-97b2-a6493dd06f42?t=1629963726283',
+	// 			imagePath:
+	// 				'/documents/20124/149827/porto_alegre.jpg/bd50f06a-8b0c-6314-aac0-dfaadd92b467?t=1629963755364',
+	// 			promotion: '15 OFF com Clube Smiles',
+	// 			flyDestiny: 'Porto Alegre (POA)',
+	// 			flyOrigin: 'Saindo de São Paulo (GRU)',
+	// 			flyPrice: '9.700 milhas/trecho',
+	// 			redirectPath: ''
+	// 		}
+	// 	],
+	// 	redirectPath: '',
+	// 	cookieName: 'CLUB2000MENSALPROMO',
+	// 	cookiePeriod: '5'
+	// };
 	const data = response.data as Array<IHeadlessResponse>;
 	if (!data.length) return;
 	let promotionalCard: Cards = {
@@ -91,14 +142,11 @@ export const asyncGetContent = async () => {
 
 		if (name === 'promotionalCards') {
 			const cards: any = innerContent.nestedContentFields;
-
 			cards.forEach((cardContent: any) => {
 				const card = cardContent;
 				const cardItem = card.nestedContentFields;
-
 				cardItem.forEach((cardItemInnerContent: any) => {
 					const { name } = cardItemInnerContent;
-
 					if (name === 'iconPath') {
 						promotionalCard.iconPath =
 							cardItemInnerContent.contentFieldValue.document.contentUrl;

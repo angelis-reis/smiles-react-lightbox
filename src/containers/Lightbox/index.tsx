@@ -9,9 +9,12 @@ import { asyncGetContent } from '../../services/getContent/index';
 import { PromotionalCard } from '../../components/PromotionalCards/index';
 
 const Lightbox: React.FC = () => {
-    const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(true);
-    const [hasData, setHasData] = useState<boolean>(false);
+	const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(true);
+	const [hasData, setHasData] = useState<boolean>(false);
 	const [optOutCookies, setOptOutCookies] = useState<string>(
+		localStorage.getItem('cookies')
+	);
+	const [cookies, setCookies] = useState<string>(
 		localStorage.getItem('cookies')
 	);
 
@@ -63,7 +66,7 @@ const Lightbox: React.FC = () => {
 
 	const getData = async () => {
 		const data: any = await asyncGetContent();
-		console.table(data);
+		// console.table(data);
 
 		const fakeData: any = await jsonData();
 		if (data) {
@@ -100,7 +103,6 @@ const Lightbox: React.FC = () => {
 				let buttonColorContent: string = data.buttonColor;
 				let edit1 = buttonColorContent.replace(`[\"`, '');
 				let edit2 = edit1.replace(`"\]`, '');
-				console.log('Koca: buttonColorContent ', edit2);
 				setButtonColor(edit2);
 			}
 
@@ -109,7 +111,6 @@ const Lightbox: React.FC = () => {
 					data.confirmButtonAction;
 				let edit1 = confirmButtonActionContent.replace(`[\"`, '');
 				let edit2 = edit1.replace(`"\]`, '');
-				console.log('Koca: confirmButtonActionContent ', edit2);
 				setConfirmButtonAction(edit2);
 			}
 			if (data.confirmButtonText) {
@@ -119,7 +120,6 @@ const Lightbox: React.FC = () => {
 				let confirmButtonTypeContent: string = data.confirmButtonType;
 				let edit1 = confirmButtonTypeContent.replace(`[\"`, '');
 				let edit2 = edit1.replace(`"\]`, '');
-				console.log('Koca: confirmButtonTypeContent ', edit2);
 				setConfirmButtonType(edit2);
 			}
 			if (data.helpButtonAction) {
@@ -133,7 +133,6 @@ const Lightbox: React.FC = () => {
 				let helpButtonTypeContent: string = data.helpButtonType;
 				let edit1 = helpButtonTypeContent.replace(`[\"`, '');
 				let edit2 = edit1.replace(`"\]`, '');
-				console.log('Koca: helpButtonTypeContent ', edit2);
 				setHelpButtonType(edit2);
 			}
 
@@ -166,11 +165,11 @@ const Lightbox: React.FC = () => {
 	const checkOptOutCheckbox = (): void => {
 		setOptOutCheckboxIsChecked((prevState) => !prevState);
 	};
-	const closeModal = () => {
-		if (optOutCheckboxIsChecked) {
-			localStorage.setItem('cookies', 'optedOut');
-			setOptOutCookies('optedOut');
-		}
+	const closeModal = (): void => {
+		// if (optOutCheckboxIsChecked) {
+		// 	localStorage.setItem('cookies', 'optedOut');
+		// 	setOptOutCookies('optedOut');
+		// }
 	};
 	const actionController = {
 		goToCheckout: (milesQuantity: string, typePayment: string) => {
@@ -305,18 +304,62 @@ const Lightbox: React.FC = () => {
 	// 		clearTimeout(showModal);
 	// 	};
 	// };
-	const activeButton = () => {
+	const activeButton = (): void => {
 		if (hasConfirmCheckbox) {
 			setConfirmButtonActive(false);
 		}
 	};
-	useEffect(() => {
+	const setCookie = (cname: string, cvalue: string, exdays: number) => {
+		const d = new Date();
+		d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+		let expires = 'expires=' + d.toUTCString();
+		document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
+	};
+
+	const getCookie = (cname: string) => {
+		let name = cname + '=';
+		let decodedCookie = decodeURIComponent(document.cookie);
+		let ca = decodedCookie.split(';');
+		for (let i = 0; i < ca.length; i++) {
+			let c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return '';
+	};
+
+	const checkCookie = () => {
+		let session = getCookie(cookieName);
+		console.log('Koca: session ', session);
+		if (session === '' || session == null) {
+			setCookie(cookieName, 'true', cookiePeriod);
+		}
+		if (session === 'true') {
+			setOptOutCookies('optedOut');
+		}
+	};
+
+	useEffect((): void => {
 		getData();
 		activeButton();
+
 		// modalAnimation();
 	}, []);
-	// useEffect(() => {}, [isOpenlightbox]);
+
+	useEffect((): void => {
+		checkCookie();
+	}, [cookiePeriod]);
+
+	// if (optOutCookies === 'optedOut') {
+	// 	return null;
+	// }
+
 	if (optOutCookies === 'optedOut') {
+		console.log('VAZIO');
 		return null;
 	}
 	return (
