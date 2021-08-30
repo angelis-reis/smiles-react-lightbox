@@ -9,7 +9,8 @@ import { asyncGetContent } from '../../services/getContent/index';
 import { PromotionalCard } from '../../components/PromotionalCards/index';
 
 const Lightbox: React.FC = () => {
-	const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(true);
+    const [isOpenlightbox, setIsOpenlightbox] = useState<boolean>(true);
+    const [hasData, setHasData] = useState<boolean>(false);
 	const [optOutCookies, setOptOutCookies] = useState<string>(
 		localStorage.getItem('cookies')
 	);
@@ -66,6 +67,7 @@ const Lightbox: React.FC = () => {
 
 		const fakeData: any = await jsonData();
 		if (data) {
+			setHasData(true);
 			if (data.hasLogo === 'true') {
 				setHasLogo(true);
 				if (data.logoPath) {
@@ -157,7 +159,6 @@ const Lightbox: React.FC = () => {
 			}
 		}
 	};
-
 	const checkConfirmCheckbox = (): void => {
 		setConfirmCheckboxIsChecked((prevState) => !prevState);
 		setConfirmButtonActive((prevState) => !prevState);
@@ -171,7 +172,6 @@ const Lightbox: React.FC = () => {
 			setOptOutCookies('optedOut');
 		}
 	};
-
 	const actionController = {
 		goToCheckout: (milesQuantity: string, typePayment: string) => {
 			let chosenPlanURL: string = '';
@@ -279,7 +279,6 @@ const Lightbox: React.FC = () => {
 			);
 		}
 	};
-
 	const confirmButtonActionType = (): void => {
 		if (confirmButtonType === 'REDIRECT') {
 			console.log('redirect');
@@ -294,12 +293,10 @@ const Lightbox: React.FC = () => {
 			confirmButtonActionFunction();
 		}
 	};
-
 	const helpButtonRedirectAction = (): void => {
 		console.log('redirect');
 		window.location.href = helpButtonAction;
 	};
-
 	// const modalAnimation = () => {
 	// 	const showModal = setTimeout(() => {
 	// 		setIsOpenlightbox(true);
@@ -308,117 +305,113 @@ const Lightbox: React.FC = () => {
 	// 		clearTimeout(showModal);
 	// 	};
 	// };
-
 	const activeButton = () => {
 		if (hasConfirmCheckbox) {
 			setConfirmButtonActive(false);
 		}
 	};
-
 	useEffect(() => {
 		getData();
 		activeButton();
-
 		// modalAnimation();
 	}, []);
-
 	// useEffect(() => {}, [isOpenlightbox]);
-
 	if (optOutCookies === 'optedOut') {
 		return null;
 	}
-
 	return (
 		<>
-			<SmlsModal
-				id={searchId}
-				isOpen={isOpenlightbox}
-				type='right'
-				toggle={() => setIsOpenlightbox(!isOpenlightbox)}
-				onClosed={closeModal}
-				className={modalWidthClass}
-			>
-				<div className='modal-content-wrapper'>
-					{hasLogo ? (
-						<img className='modal-logo' src={logoPath} />
-					) : null}
+			{hasData ? (
+				<SmlsModal
+					id={searchId}
+					isOpen={isOpenlightbox}
+					type='right'
+					toggle={() => setIsOpenlightbox(!isOpenlightbox)}
+					onClosed={closeModal}
+					className={modalWidthClass}
+				>
+					<div className='modal-content-wrapper'>
+						{hasLogo ? (
+							<img className='modal-logo' src={logoPath} />
+						) : null}
 
-					<h4 className='modal-title'>{titleContentName}</h4>
+						<h4 className='modal-title'>{titleContentName}</h4>
 
-					{hasHtmlContentName ? (
-						<section
-							className='modal-html-content'
-							dangerouslySetInnerHTML={{
-								__html: `${htmlContentName}`
-							}}
-						/>
-					) : null}
-
-					{hasPromotionalCards ? (
-						<div className='modal-cards'>
-							{cards.map((card) => (
-								<PromotionalCard
-									redirectPath={card.redirectPath}
-									cardIconPath={card.iconPath}
-									cardImagePath={card.imagePath}
-									cardPromotion={card.promotion}
-									cardOrigin={card.flyOrigin}
-									cardDestiny={card.flyDestiny}
-									cardPrice={card.flyPrice}
-								/>
-							))}
-						</div>
-					) : null}
-
-					{hasConfirmCheckbox ? (
-						<div className='rules-checkbox'>
-							<SmlsCheckbox
-								className='modal-rules-checkbox'
-								id='acceptRules'
-								checked={confirmCheckboxIsChecked}
-								onClick={checkConfirmCheckbox}
-							/>
-							<span
-								className='modal-rules-checkbox-text'
+						{hasHtmlContentName ? (
+							<section
+								className='modal-html-content'
 								dangerouslySetInnerHTML={{
-									__html: `${confirmCheckboxText}`
+									__html: `${htmlContentName}`
 								}}
 							/>
+						) : null}
+
+						{hasPromotionalCards ? (
+							<div className='modal-cards'>
+								{cards.map((card) => (
+									<PromotionalCard
+										redirectPath={card.redirectPath}
+										cardIconPath={card.iconPath}
+										cardImagePath={card.imagePath}
+										cardPromotion={card.promotion}
+										cardOrigin={card.flyOrigin}
+										cardDestiny={card.flyDestiny}
+										cardPrice={card.flyPrice}
+									/>
+								))}
+							</div>
+						) : null}
+
+						{hasConfirmCheckbox ? (
+							<div className='rules-checkbox'>
+								<SmlsCheckbox
+									className='modal-rules-checkbox'
+									id='acceptRules'
+									checked={confirmCheckboxIsChecked}
+									onClick={checkConfirmCheckbox}
+								/>
+								<span
+									className='modal-rules-checkbox-text'
+									dangerouslySetInnerHTML={{
+										__html: `${confirmCheckboxText}`
+									}}
+								/>
+							</div>
+						) : null}
+
+						<div className='modal-confirm-button'>
+							<SmlsButton
+								className={buttonColor}
+								color='primary'
+								id='btn_confirmPassword'
+								text={confirmButtonText}
+								disabled={!confirmButtonActive}
+								onClick={confirmButtonActionType}
+							/>
 						</div>
-					) : null}
 
-					<div className='modal-confirm-button'>
-						<SmlsButton
-							className={buttonColor}
-							color='primary'
-							id='btn_confirmPassword'
-							text={confirmButtonText}
-							disabled={!confirmButtonActive}
-							onClick={confirmButtonActionType}
-						/>
+						{hasHelpButton ? (
+							<SmlsButton
+								className='modal-help-button'
+								color='hyperlink'
+								id='btn_help'
+								text={helpButtonText}
+								onClick={helpButtonRedirectAction}
+							/>
+						) : null}
+
+						{hasOptOutCheckbox ? (
+							<SmlsCheckbox
+								className='modal-opt-out-checkbox'
+								id='optOut'
+								label={optOutCheckboxText}
+								checked={optOutCheckboxIsChecked}
+								onClick={checkOptOutCheckbox}
+							/>
+						) : null}
 					</div>
-
-					{hasHelpButton ? (
-						<SmlsButton
-							className='modal-help-button'
-							color='hyperlink'
-							id='btn_help'
-							text={helpButtonText}
-							onClick={helpButtonRedirectAction}
-						/>
-					) : null}
-
-					{hasOptOutCheckbox ? (
-						<SmlsCheckbox
-							className='modal-opt-out-checkbox'
-							id='optOut'
-							label={optOutCheckboxText}
-							checked={optOutCheckboxIsChecked}
-							onClick={checkOptOutCheckbox}
-						/>
-					) : null}
-				</div>
-			</SmlsModal>
+				</SmlsModal>
+			) : null}
 		</>
 	);
 };
